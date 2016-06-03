@@ -42,7 +42,8 @@ from boatbuildertabs import ProducerOverviewTabBase, UnitbuilderTabBase, Boatbui
                                                 BoatbuilderConfirmTab
 from mainsquaretabs import AccountTab, MainSquareOverviewTab, \
 						MainSquareSailorsTab, MainSquarePioneersTab, \
-						MainSquareSettlersTab, MainSquareCitizensTab
+						MainSquareSettlersTab, MainSquareCitizensTab, \
+						MainSquareMerchantsTab
 from buildrelatedtab import BuildRelatedTab
 
 from diplomacytab import DiplomacyTab
