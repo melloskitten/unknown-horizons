@@ -26,11 +26,11 @@ from fife import fife
 from fife.extensions.pychan.widgets import HBox, Icon, Label
 
 import horizons.globals
-
 from horizons.extscheduler import ExtScheduler
 from horizons.gui.util import get_res_icon_path
 from horizons.gui.widgets.container import AutoResizeContainer
 from horizons.gui.widgets.icongroup import TooltipBG
+
 
 class _Tooltip(object):
 	"""Base class for pychan widgets overloaded with tooltip functionality"""
@@ -52,8 +52,8 @@ class _Tooltip(object):
 			self.name + '/mouseMoved/tooltip' : self.position_tooltip,
 
 			# TIP: the mousePressed event is especially useful when such as click
-			# will trigger this tooltip's parent widget to be hidden (or destroyed), 
-			# which hides this tooltip first before hides the parent widget. 
+			# will trigger this tooltip's parent widget to be hidden (or destroyed),
+			# which hides this tooltip first before hides the parent widget.
 			# Otherwise the tooltip will show forever.
 			self.name + '/mousePressed/tooltip' : self.hide_tooltip,
 
@@ -135,7 +135,8 @@ class _Tooltip(object):
 			for spec in buildmenu_icons[0].split():
 				(res_id, amount) = spec.split(':')
 				label = Label(text=amount+'  ')
-				icon = Icon(image=get_res_icon_path(int(res_id)), size=(16, 16))
+				icon = Icon(image=get_res_icon_path(int(res_id)), size=(16, 16),
+				            scale=True)
 				# For compatibility with FIFE 0.3.5 and older, also set min/max.
 				icon.max_size = icon.min_size = (16, 16)
 				hbox.addChildren(icon, label)
@@ -177,7 +178,7 @@ class _Tooltip(object):
 		target_widget = self
 		# traverse the widget chain again
 		while target_widget:
-			# none of ancestors of this widget gets removed, 
+			# none of ancestors of this widget gets removed,
 			# just do nothing and let the tooltip shown
 			if target_widget == self.topmost_widget:
 				return

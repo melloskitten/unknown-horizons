@@ -20,11 +20,9 @@
 # ###################################################
 
 import horizons.globals
-
 from horizons.constants import EDITOR, GROUND, VIEW
-from horizons.ext.dummy import Dummy
 from horizons.gui.keylisteners import IngameKeyListener, KeyConfig
-from horizons.gui.modules import PauseMenu, HelpDialog, SelectSavegameDialog
+from horizons.gui.modules import HelpDialog, PauseMenu, SelectSavegameDialog
 from horizons.gui.mousetools import SelectionTool, TileLayingTool
 from horizons.gui.tabs import TabWidget
 from horizons.gui.tabs.tabinterface import TabInterface
@@ -37,6 +35,14 @@ from horizons.util.lastactiveplayersettlementmanager import LastActivePlayerSett
 from horizons.util.living import LivingObject, livingProperty
 from horizons.util.loaders.tilesetloader import TileSetLoader
 from horizons.util.python.callback import Callback
+
+
+class DummyLogbook(object):
+	"""
+	Dummy object that provides the minimal interface for the editor's ingame gui to work.
+	"""
+	def display_message_history(self):
+		pass
 
 
 class IngameGui(LivingObject):
@@ -54,10 +60,10 @@ class IngameGui(LivingObject):
 		LastActivePlayerSettlementManager.create_instance(self.session)
 
 		# Mocks needed to act like the real IngameGui
-		self.show_menu = Dummy
-		self.hide_menu = Dummy
+		self.show_menu = lambda x: 0
+		self.hide_menu = lambda: 0
 		# a logbook Dummy is necessary for message_widget to work
-		self.logbook = Dummy
+		self.logbook = DummyLogbook()
 
 		self.mainhud = load_uh_widget('minimap.xml')
 		self.mainhud.position_technique = "right+0:top+0"
@@ -207,6 +213,8 @@ class SettingsTab(TabInterface):
 		super(SettingsTab, self).__init__(widget=self.widget)
 
 		self._world_editor = world_editor
+		self._current_tile = 'sand'
+		self._ingame_gui = ingame_gui
 
 		# Brush size
 		for i in range(EDITOR.MIN_BRUSH_SIZE, EDITOR.MAX_BRUSH_SIZE + 1):
@@ -222,7 +230,27 @@ class SettingsTab(TabInterface):
 			tile = getattr(GROUND, tile_type.upper())
 			image.up_image = self._get_tile_image(tile)
 			image.size = image.min_size = image.max_size = (64, 32)
-			image.capture(Callback(ingame_gui.set_cursor, 'tile_layer', tile))
+			image.capture(Callback(self._set_cursor_tile, tile))
+
+		self.widget.mapEvents({
+			self.widget.name+'/mouseEntered/cursor': self._cursor_inside,
+			self.widget.name+'/mouseExited/cursor': self._cursor_outside,
+		})
+
+		self._ingame_gui.mainhud.mapEvents({
+			self._ingame_gui.mainhud.name+'/mouseEntered/cursor': self._cursor_inside,
+			self._ingame_gui.mainhud.name+'/mouseExited/cursor': self._cursor_outside,
+		})
+
+	def _set_cursor_tile(self, tile):
+		self._current_tile = tile
+		self._ingame_gui.set_cursor('tile_layer', self._current_tile)
+
+	def _cursor_inside(self):
+		horizons.globals.fife.set_cursor_image('default')
+
+	def _cursor_outside(self):
+		self._ingame_gui.set_cursor('tile_layer', self._current_tile)
 
 	def _get_tile_image(self, tile):
 		# TODO TileLayingTool does almost the same thing, perhaps put this in a better place

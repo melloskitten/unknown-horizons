@@ -19,13 +19,13 @@
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # ###################################################
 
-from fife import fife
 import copy
 import itertools
 import operator
 
-import horizons.globals
+from fife import fife
 
+import horizons.globals
 from horizons.component import Component
 from horizons.constants import GFX, LAYERS, RES
 from horizons.util.python import decorators
@@ -58,7 +58,7 @@ class SelectableComponent(Component):
 		          'fisher'   : SelectableFisherComponent, }
 		arguments = copy.copy(arguments)
 		t = arguments.pop('type')
-		return TYPES[ t ]( **arguments )
+		return TYPES[t](**arguments)
 
 	def __init__(self, tabs, enemy_tabs, active_tab=None):
 		super(SelectableComponent, self).__init__()

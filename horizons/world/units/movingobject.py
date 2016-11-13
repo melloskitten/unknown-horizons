@@ -20,20 +20,25 @@
 # ###################################################
 
 import logging
+
 from fife import fife
 
-from horizons.scheduler import Scheduler
-
+from horizons.component.componentholder import ComponentHolder
+from horizons.constants import GAME_SPEED
 from horizons.engine import Fife
-from horizons.util.shapes import Point
+from horizons.ext.typing import TYPE_CHECKING, Type
+from horizons.scheduler import Scheduler
 from horizons.util.pathfinding import PathBlockedError
 from horizons.util.python import decorators
 from horizons.util.python.weakmethodlist import WeakMethodList
+from horizons.util.shapes import Point
 from horizons.world.concreteobject import ConcreteObject
-from horizons.constants import GAME_SPEED
-from horizons.component.componentholder import ComponentHolder
 from horizons.world.units import UnitClass
 from horizons.world.units.unitexeptions import MoveNotPossible
+
+if TYPE_CHECKING:
+	from horizons.util.pathfinding.pather import AbstractPather
+
 
 class MovingObject(ComponentHolder, ConcreteObject):
 	"""This class provides moving functionality and is to be inherited by Unit.
@@ -58,7 +63,8 @@ class MovingObject(ComponentHolder, ConcreteObject):
 
 	log = logging.getLogger("world.units")
 
-	pather_class = None # overwrite this with a descendant of AbstractPather
+	# overwrite this with a descendant of AbstractPather
+	pather_class = None # type: Type[AbstractPather]
 
 	def __init__(self, x, y, **kwargs):
 		super(MovingObject, self).__init__(x=x, y=y, **kwargs)

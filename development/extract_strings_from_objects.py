@@ -34,6 +34,7 @@
 ###############################################################################
 
 
+from __future__ import print_function
 HEADER = '''\
 # ###################################################
 # Copyright (C) 2008-2016 The Unknown Horizons Team
@@ -77,7 +78,7 @@ HEADER = '''\
 #
 ###############################################################################
 
-
+T = lambda s: s
 
 
 
@@ -158,7 +159,7 @@ def content_from_file(filename):
 		return ''
 	def add_line(value, component, sep, key, filename):
 		if value.startswith('_ '):
-			text = u'_("{value}")'.format(value=value[2:])
+			text = u'T("{value}")'.format(value=value[2:])
 			component = component + sep + str(parse_token(key, 'TIER'))
 			filename = filename.rsplit('.yaml')[0].split(OBJECT_PATH)[1].replace('/',':')
 			comment = '%s of %s' %(component, filename)
@@ -198,4 +199,4 @@ output = '%s%s%s' % (HEADER, '\n'.join(filesnippets), FOOTER)
 if len(sys.argv) > 1:
 	file(sys.argv[1], 'w').write(output)
 else:
-	print output
+	print(output)

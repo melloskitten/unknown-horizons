@@ -19,26 +19,28 @@
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # ###################################################
 
+from __future__ import print_function
+
 import logging
 
-from horizons.world.production.productionline import ProductionLine
-from horizons.world.production.production import Production, SingleUseProduction
-from horizons.constants import PRODUCTION
-from horizons.scheduler import Scheduler
-from horizons.util.python import decorators
-from horizons.util.shapes import Circle, Point
-from horizons.component.storagecomponent import StorageComponent
-from horizons.component.ambientsoundcomponent import AmbientSoundComponent
-from horizons.component import Component
-from horizons.world.status import ProductivityLowStatus, DecommissionedStatus, InventoryFullStatus
-from horizons.world.production.unitproduction import UnitProduction
 from horizons.command.unit import CreateUnit
-from horizons.util.changelistener import metaChangeListenerDecorator
-from horizons.messaging import AddStatusIcon, RemoveStatusIcon
-from horizons.world.production.utilization import Utilization, FullUtilization, FieldUtilization
-from horizons.util.python.callback import Callback
+from horizons.component import Component
+from horizons.component.ambientsoundcomponent import AmbientSoundComponent
 from horizons.component.namedcomponent import NamedComponent
-from horizons.messaging import MineEmpty
+from horizons.component.storagecomponent import StorageComponent
+from horizons.constants import PRODUCTION
+from horizons.messaging import AddStatusIcon, MineEmpty, RemoveStatusIcon
+from horizons.scheduler import Scheduler
+from horizons.util.changelistener import metaChangeListenerDecorator
+from horizons.util.python import decorators
+from horizons.util.python.callback import Callback
+from horizons.util.shapes import Circle, Point
+from horizons.world.production.production import Production, SingleUseProduction
+from horizons.world.production.productionline import ProductionLine
+from horizons.world.production.unitproduction import UnitProduction
+from horizons.world.production.utilization import FieldUtilization, FullUtilization, Utilization
+from horizons.world.status import DecommissionedStatus, InventoryFullStatus, ProductivityLowStatus
+
 
 @metaChangeListenerDecorator("production_finished")
 @metaChangeListenerDecorator("activity_changed")
@@ -57,6 +59,7 @@ class Producer(Component):
 	    'FullUtilization': FullUtilization
 	}
 
+	produces_resource = True
 	production_class = Production
 
 	# INIT
@@ -555,6 +558,7 @@ class QueueProducer(Producer):
 class ShipProducer(QueueProducer):
 	"""Uses queues to produce naval units"""
 
+	produces_resource = False
 	production_class = UnitProduction
 
 	def get_unit_production_queue(self):
@@ -565,7 +569,7 @@ class ShipProducer(QueueProducer):
 			prod_line = self.create_production_line(prod_line_id)
 			units = prod_line.unit_production.keys()
 			if len(units) > 1:
-				print 'WARNING: unit production system has been designed for 1 type per order'
+				print('WARNING: unit production system has been designed for 1 type per order')
 			queue.append(units[0])
 		return queue
 
@@ -606,6 +610,8 @@ class ShipProducer(QueueProducer):
 
 class GroundUnitProducer(ShipProducer):
 	"""Uses queues to produce groundunits"""
+
+	produces_resource = False
 
 	def _place_unit(self, unit):
 		radius = 1

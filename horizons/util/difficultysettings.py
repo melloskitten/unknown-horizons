@@ -21,11 +21,12 @@
 
 from horizons.util.python import decorators
 
+
 class DifficultySettings(object):
 	EASY_LEVEL = 0
 	DEFAULT_LEVEL = 1
 
-	levels = {}
+	levels = {} # type: Dict[int, DifficultySettings]
 
 	@classmethod
 	def get_settings(cls, level):

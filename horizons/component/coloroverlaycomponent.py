@@ -26,7 +26,6 @@ from operator import attrgetter
 from fife import fife
 
 import horizons.globals
-
 from horizons.component import Component
 from horizons.messaging import ActionChanged
 from horizons.scheduler import Scheduler
@@ -195,11 +194,3 @@ class ColorOverlayComponent(Component):
 		"""Removes all color overlays from the fife instance. """
 		self.remove_overlay()
 		super(ColorOverlayComponent, self).remove()
-
-
-# If "old" FIFE version is detected (i.e. one without overlay support), silently disable.
-if not hasattr(fife, 'OverlayColors'):
-	class ColorOverlayComponent(Component):
-
-		def __init__(self, overlays=None):
-			super(ColorOverlayComponent, self).__init__()

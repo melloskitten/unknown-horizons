@@ -20,18 +20,17 @@
 # ###################################################
 
 import logging
-
 import random
-from horizons.ai.aiplayer.behavior import BehaviorManager
 
+from horizons.ai.aiplayer.behavior import BehaviorManager
+from horizons.ai.aiplayer.behavior.behaviorcomponents import BehaviorDebug  # pylint: disable=W0611
 from horizons.ai.aiplayer.behavior.behaviorcomponents import (
-	BehaviorPirateHater, BehaviorCoward, BehaviorRegular, BehaviorPirateRoutine,
-	BehaviorBreakDiplomacy, BehaviorDoNothing, BehaviorRegularPirate, BehaviorAggressive,
-	BehaviorAggressivePirate, BehaviorDebug, BehaviorSmart, BehaviorEvil, BehaviorNeutral,
-	BehaviorGood, BehaviorCautious)
+	BehaviorAggressive, BehaviorAggressivePirate, BehaviorDoNothing, BehaviorEvil, BehaviorGood,
+	BehaviorNeutral, BehaviorRegular, BehaviorRegularPirate, BehaviorSmart)
+from horizons.ai.aiplayer.strategy.condition import ConditionDebug  # pylint: disable=W0611
 from horizons.ai.aiplayer.strategy.condition import (
-	ConditionNeutral, ConditionSharingSettlement, ConditionHostile, ConditionDebug,
-	ConditionPirateRoutinePossible, ConditionAllied)
+	ConditionAllied, ConditionHostile, ConditionNeutral, ConditionPirateRoutinePossible,
+	ConditionSharingSettlement)
 
 
 class BehaviorProfile(object):

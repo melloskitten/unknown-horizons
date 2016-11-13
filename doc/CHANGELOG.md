@@ -3,6 +3,7 @@ CHANGELOG Unknown Horizons
 
 | Release | Current savegame revision |
 |---|---|
+| 2016.1 | XX |
 | 2015.1 | 75 |
 | 2014.1 | 74 |
 | 2013.3 | 73 |
@@ -20,17 +21,16 @@ CHANGELOG Unknown Horizons
 
 2016-XX-XX: Milestone 2016.1
 ----------------------------
-changelog date: 25. May 2016
+changelog date: 9th Oct 2016
 
 ### Gameplay and Balancing
 
 New features
  - #986  Add a button to discard all resources from a tradeship.
  - #1821 gameplay tips
+ - #2353 Add a barrier building
  
 ### Media Content
-
-New files and features
 
 Grafic:
  - added winery
@@ -61,6 +61,11 @@ Grafic:
  - added shiny new female gfx
  - Animate fire of market place and tent1
  - added second residential house for tier 3
+ - Changes to the main menu background grafics
+ - replaced settlers residential house with new one
+ - added third residential house for tier 3
+ - replaced brewery buildmenu icon (placeholder) with a new icon
+ - replaced grass tiles
 
 Sound:
 

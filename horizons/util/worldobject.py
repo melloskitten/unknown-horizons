@@ -19,11 +19,13 @@
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # ###################################################
 
-import weakref
 import logging
+import weakref
 
-from horizons.util.changelistener import ChangeListener
+from horizons.ext.typing import Any, MutableMapping
 from horizons.messaging import WorldObjectDeleted
+from horizons.util.changelistener import ChangeListener
+
 
 class WorldObjectNotFound(KeyError):
 	pass
@@ -32,7 +34,7 @@ class WorldObject(ChangeListener):
 	"""Gives every instance a unique id.
 	"""
 	__next_id = 1
-	__objects = weakref.WeakValueDictionary()
+	__objects = weakref.WeakValueDictionary() # type: MutableMapping[int, Any]
 	log = logging.getLogger("util.worldobject")
 	def __init__(self, worldid=None, **kwargs):
 		"""

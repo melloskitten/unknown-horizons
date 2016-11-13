@@ -24,13 +24,14 @@ import logging
 from collections import deque
 
 from horizons.ai.aiplayer.basicbuilder import BasicBuilder
+from horizons.ai.aiplayer.constants import BUILD_RESULT, BUILDING_PURPOSE
 from horizons.ai.aiplayer.roadplanner import RoadPlanner
-from horizons.ai.aiplayer.constants import BUILDING_PURPOSE, BUILD_RESULT
 from horizons.constants import BUILDINGS
+from horizons.entities import Entities
 from horizons.util.python import decorators
 from horizons.util.shapes import Rect
 from horizons.util.worldobject import WorldObject
-from horizons.entities import Entities
+
 
 class AreaBuilder(WorldObject):
 	"""A class governing the use of a specific type of area of a settlement."""
@@ -176,7 +177,7 @@ class AreaBuilder(WorldObject):
 			if not self.settlement_manager.production_builder.road_connectivity_cache.is_connection_possible(collector_coords, destination_coords):
 				return None
 
-		blocked_coords = set([coords for coords in builder.position.tuple_iter()]).union(self.land_manager.coastline)
+		blocked_coords = {coords for coords in builder.position.tuple_iter()}.union(self.land_manager.coastline)
 		beacon = Rect.init_from_borders(loading_area.left - 1, loading_area.top - 1,
 		                                loading_area.right + 1, loading_area.bottom + 1)
 
@@ -197,7 +198,7 @@ class AreaBuilder(WorldObject):
 
 	def build_road_connection(self, builder):
 		"""Build a road connecting the builder to a building with general collectors.
-		
+
 		Return True if it worked, False if the path was None."""
 		path = self._get_road_to_builder(builder)
 		return self.build_road(path)
@@ -257,7 +258,7 @@ class AreaBuilder(WorldObject):
 
 	def extend_settlement(self, position):
 		"""Build a storage to extend the settlement towards the given position.
-		
+
 		Return a BUILD_RESULT constant."""
 		return self.settlement_manager.production_builder.extend_settlement_with_storage(position)
 

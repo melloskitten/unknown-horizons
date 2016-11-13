@@ -25,9 +25,8 @@ import uuid
 
 from horizons import network
 from horizons.i18n import find_available_languages
-from horizons.network import packets, enet
-from horizons.network.common import Player, Game, ErrorType
-
+from horizons.network import enet, packets
+from horizons.network.common import ErrorType, Game, Player
 
 if not enet:
 	raise Exception("Could not find enet module.")
@@ -63,30 +62,30 @@ class Server(object):
 			'maxpacketsize' : 2 * 1024 * 1024,
 		}
 		self.callbacks = {
-			'onconnect':     [ self.onconnect ],
-			'ondisconnect':  [ self.ondisconnect ],
-			'onreceive':     [ self.onreceive ],
-			packets.cmd_error:                 [ self.onerror ],
-			packets.cmd_fatalerror:            [ self.onfatalerror ],
-			packets.client.cmd_sessionprops:   [ self.onsessionprops ],
-			packets.client.cmd_creategame:     [ self.oncreategame ],
-			packets.client.cmd_listgames:      [ self.onlistgames ],
-			packets.client.cmd_joingame:       [ self.onjoingame ],
-			packets.client.cmd_leavegame:      [ self.onleavegame ],
-			packets.client.cmd_chatmsg:        [ self.onchat ],
-			packets.client.cmd_changename:     [ self.onchangename ],
-			packets.client.cmd_changecolor:    [ self.onchangecolor ],
-			packets.client.cmd_preparedgame:   [ self.onpreparedgame ],
-			packets.client.cmd_toggleready:    [ self.ontoggleready ],
-			packets.client.cmd_kickplayer:     [ self.onkick ],
-			#TODO packets.client.cmd_fetch_game:     [ self.onfetchgame ],
-			#TODO packets.client.savegame_data:      [ self.onsavegamedata ],
-			'preparegame':   [ self.preparegame ],
-			'startgame':     [ self.startgame ],
-			'leavegame':     [ self.leavegame ],
-			'deletegame':    [ self.deletegame ],
-			'terminategame': [ self.terminategame ],
-			'gamedata':      [ self.gamedata ],
+			'onconnect':     [self.onconnect],
+			'ondisconnect':  [self.ondisconnect],
+			'onreceive':     [self.onreceive],
+			packets.cmd_error:                 [self.onerror],
+			packets.cmd_fatalerror:            [self.onfatalerror],
+			packets.client.cmd_sessionprops:   [self.onsessionprops],
+			packets.client.cmd_creategame:     [self.oncreategame],
+			packets.client.cmd_listgames:      [self.onlistgames],
+			packets.client.cmd_joingame:       [self.onjoingame],
+			packets.client.cmd_leavegame:      [self.onleavegame],
+			packets.client.cmd_chatmsg:        [self.onchat],
+			packets.client.cmd_changename:     [self.onchangename],
+			packets.client.cmd_changecolor:    [self.onchangecolor],
+			packets.client.cmd_preparedgame:   [self.onpreparedgame],
+			packets.client.cmd_toggleready:    [self.ontoggleready],
+			packets.client.cmd_kickplayer:     [self.onkick],
+			#TODO packets.client.cmd_fetch_game:     [self.onfetchgame],
+			#TODO packets.client.savegame_data:      [self.onsavegamedata],
+			'preparegame':   [self.preparegame],
+			'startgame':     [self.startgame],
+			'leavegame':     [self.leavegame],
+			'deletegame':    [self.deletegame],
+			'terminategame': [self.terminategame],
+			'gamedata':      [self.gamedata],
 		}
 		self.games   = [] # list of games
 		self.players = {} # sessionid => Player() dict
@@ -280,7 +279,7 @@ class Server(object):
 
 		# check packet size
 		if len(event.packet.data) > self.capabilities['maxpacketsize']:
-			logging.warning("[RECEIVE] Global packet size exceeded from {0!s}: size={1!d}".
+			logging.warning("[RECEIVE] Global packet size exceeded from {0!s}: size={1:d}".
 				format(peer.address, len(event.packet.data)))
 			self.fatalerror(player, __("You've exceeded the global packet size.") + " " +
 			                        __("This should never happen. "

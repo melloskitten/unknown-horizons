@@ -21,7 +21,10 @@
 
 from horizons.util.python import Const
 from horizons.util.python.decorators import bind_all
-from horizons.util.shapes import Shape, Point
+
+from . import Shape
+from .point import Point
+
 
 class Rect(Shape):
 	__slots__ = ('top', 'left', 'right', 'bottom', 'origin')

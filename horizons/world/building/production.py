@@ -20,16 +20,17 @@
 # ###################################################
 
 
-from horizons.world.building.buildingresourcehandler import BuildingResourceHandler
-from horizons.world.building.building import BasicBuilding
-from horizons.world.building.buildable import BuildableSingle, BuildableSingleOnCoast, BuildableSingleOnDeposit, BuildableSingleOnOcean
-from horizons.world.building.nature import Field
-from horizons.util.shapes import Rect, RadiusRect
 from horizons.command.building import Build
-from horizons.scheduler import Scheduler
-from horizons.constants import BUILDINGS, PRODUCTION
-from horizons.world.production.producer import Producer
 from horizons.component.storagecomponent import StorageComponent
+from horizons.constants import BUILDINGS, PRODUCTION
+from horizons.scheduler import Scheduler
+from horizons.util.shapes import RadiusRect, Rect
+from horizons.world.building.buildable import (
+	BuildableSingle, BuildableSingleOnCoast, BuildableSingleOnDeposit, BuildableSingleOnOcean)
+from horizons.world.building.building import BasicBuilding
+from horizons.world.building.buildingresourcehandler import BuildingResourceHandler
+from horizons.world.building.nature import Field
+from horizons.world.production.producer import Producer
 
 
 class ProductionBuilding(BuildingResourceHandler, BuildableSingle, BasicBuilding):
@@ -93,7 +94,7 @@ class Mine(BuildingResourceHandler, BuildableSingleOnDeposit, BasicBuilding):
 
 	@classmethod
 	def get_loading_area(cls, building_id, rotation, pos):
-		if building_id == BUILDINGS.MOUNTAIN or building_id == BUILDINGS.MINE:
+		if building_id in [BUILDINGS.MOUNTAIN, BUILDINGS.MINE]:
 			if rotation == 45:
 				return Rect.init_from_topleft_and_size(pos.origin.x, pos.origin.y + 1, 1, 3)
 			elif rotation == 135:

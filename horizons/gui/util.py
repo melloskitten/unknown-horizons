@@ -21,19 +21,23 @@
 
 import logging
 import os
-# Find the best implementation available on this platform
-try:
-	from cStringIO import StringIO
-except:
-	from StringIO import StringIO
 
 from fife.extensions.pychan import loadXML
 from fife.extensions.pychan.widgets import Container, HBox, Icon
 
 from horizons.gui.i18n import translate_widget
 from horizons.gui.widgets.imagebutton import ImageButton
+from horizons.i18n import gettext as T
 from horizons.util.python import decorators
 from horizons.util.python.callback import Callback
+
+# Find the best implementation available on this platform
+try:
+	from cStringIO import StringIO
+except ImportError:
+	from StringIO import StringIO # type: ignore
+
+
 
 @decorators.cachedfunction
 def get_gui_files_map():
@@ -57,20 +61,20 @@ def get_happiness_icon_and_helptext(value, session):
 	happy = session.db.get_upper_happiness_limit()
 	if value <= sad:
 		happiness_icon_path += "sad.png"
-		happiness_helptext = _("sad")
+		happiness_helptext = T("sad")
 	elif sad < value < happy:
 		happiness_icon_path += "average.png"
-		happiness_helptext = _("satisfied")
+		happiness_helptext = T("satisfied")
 	elif value >= happy:
 		happiness_icon_path += "happy.png"
-		happiness_helptext = _("happy")
+		happiness_helptext = T("happy")
 
 	return happiness_icon_path, happiness_helptext
 
 @decorators.cachedfunction
 def get_widget_xml(filename):
 	"""
-	This function reads the given widget file's content and returns the XML. 
+	This function reads the given widget file's content and returns the XML.
 	It is cached to avoid useless IO.
 	"""
 	with open(get_gui_files_map()[filename]) as open_file:
@@ -141,6 +145,7 @@ def create_resource_icon(res_id, db):
 	@param db: dbreader for main db"""
 	widget = Icon(image=get_res_icon_path(res_id))
 	widget.helptext = db.get_res_name(res_id)
+	widget.scale = True
 	return widget
 
 

@@ -32,7 +32,7 @@ is derived from https://launchpad.net/python-distutils-extra
 which is licensed under the terms of the GNU General Public License, version 2.
 
 
-/horizons/ext/dummy.py
+/tests/dummy.py
 
 is licensed by nosklo under the terms of the  MIT license.  Information can be
 obtained at http://www.opensource.org/licenses/mit-license.php .
@@ -43,11 +43,10 @@ obtained at http://www.opensource.org/licenses/mit-license.php .
 is licensed by Armin Ronacher under the terms of the 3-clause BSD license. See
 BSD_speaklater.
 
+/horizons/ext/typing.py
 
-/horizons/ext/polib.py
+is licensed under the Python License, Version 2. See https://github.com/python/typing
 
-is licensed by David Jean Louis under the terms of the MIT license. See
-MIT_polib.
 
 The files
 

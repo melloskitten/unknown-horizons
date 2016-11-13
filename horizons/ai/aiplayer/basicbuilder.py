@@ -21,12 +21,14 @@
 
 import copy
 
-from horizons.entities import Entities
-from horizons.constants import BUILDINGS
 from horizons.command.building import Build
+from horizons.constants import BUILDINGS
+from horizons.entities import Entities
+from horizons.ext.typing import Tuple
 from horizons.util.python import decorators
 from horizons.util.shapes import Point, Rect
 from horizons.world.building.production import Mine
+
 
 class BasicBuilder(object):
 	"""An object of this class represents a non-checked plan to build a building at a specific place."""
@@ -101,7 +103,7 @@ class BasicBuilder(object):
 		return 'BasicBuilder of building {0:d} at {1!s}, orientation {2:d}'. \
 			format(self.building_id, self.coords, self.orientation)
 
-	__cache = {}
+	__cache = {} # type: Dict[Tuple[int, Tuple[int, int], int], BasicBuilder]
 
 	@classmethod
 	def clear_cache(cls):

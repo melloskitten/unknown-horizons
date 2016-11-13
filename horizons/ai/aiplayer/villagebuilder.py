@@ -20,18 +20,18 @@
 # ###################################################
 
 import copy
-import math
 import logging
-
+import math
 from collections import defaultdict, deque
 
 from horizons.ai.aiplayer.areabuilder import AreaBuilder
 from horizons.ai.aiplayer.basicbuilder import BasicBuilder
 from horizons.ai.aiplayer.constants import BUILD_RESULT, BUILDING_PURPOSE
 from horizons.constants import AI, BUILDINGS
-from horizons.util.shapes import distances, Rect
-from horizons.util.python import decorators
 from horizons.entities import Entities
+from horizons.util.python import decorators
+from horizons.util.shapes import Rect, distances
+
 
 class VillageBuilder(AreaBuilder):
 	"""
@@ -114,9 +114,9 @@ class VillageBuilder(AreaBuilder):
 		* the plan is stitched together and other village buildings are by replacing some
 			of the residences
 		"""
-
-		xs = set([x for (x, _) in self.land_manager.village])
-		ys = set([y for (_, y) in self.land_manager.village])
+		# Sets of coordinates used for calulate the width and height
+		xs = {x for (x, _) in self.land_manager.village}
+		ys = {y for (_, y) in self.land_manager.village}
 
 		width = max(xs) - min(xs) + 1
 		height = max(ys) - min(ys) + 1
@@ -169,7 +169,6 @@ class VillageBuilder(AreaBuilder):
 
 		self.plan = {}
 		ys = set(zip(*self.land_manager.village.keys())[1])
-		set([y for (_, y) in self.land_manager.village])
 		for road_x in vertical_roads:
 			for road_y in ys:
 				coords = (road_x, road_y)
@@ -782,7 +781,7 @@ class VillageBuilder(AreaBuilder):
 
 		removed_coords_list = []
 		for coords, (purpose, (section, _)) in self.plan.iteritems():
-			if purpose == BUILDING_PURPOSE.RESERVED or purpose == BUILDING_PURPOSE.NONE:
+			if purpose in [BUILDING_PURPOSE.RESERVED, BUILDING_PURPOSE.NONE]:
 				continue
 			position = self._get_position(coords, BUILDING_PURPOSE.get_building(purpose))
 			building = self.settlement.ground_map[coords].object if coords in self.settlement.ground_map else None
@@ -858,4 +857,4 @@ class VillageBuilder(AreaBuilder):
 	def __str__(self):
 		return '%s VillageBuilder(%s)' % (self.settlement_manager, self.worldid if hasattr(self, 'worldid') else 'none')
 
-decorators.bind_all(VillageBuilder)
+decorators.bind_all(VillageBuilder, stoplist=['AI'])

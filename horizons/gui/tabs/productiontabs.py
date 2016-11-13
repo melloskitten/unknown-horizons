@@ -25,26 +25,27 @@ import weakref
 
 from fife.extensions.pychan.widgets import Icon, Label
 
-from horizons.command.production import ToggleActive
 from horizons.command.building import Tear
+from horizons.command.production import ToggleActive
 from horizons.component.fieldbuilder import FieldBuilder
+from horizons.component.storagecomponent import StorageComponent
 from horizons.constants import GAME_SPEED, PRODUCTION
-from horizons.gui.tabs import OverviewTab
 from horizons.gui.util import load_uh_widget
 from horizons.gui.widgets.container import AutoResizeContainer
 from horizons.gui.widgets.imagebutton import ImageButton
 from horizons.gui.widgets.imagefillstatusbutton import ImageFillStatusButton
-from horizons.i18n import _lazy
+from horizons.i18n import gettext as T, gettext_lazy as LazyT
 from horizons.scheduler import Scheduler
-from horizons.util.python.callback import Callback
 from horizons.util.pychananimation import PychanAnimation
-from horizons.component.storagecomponent import StorageComponent
+from horizons.util.python.callback import Callback
 from horizons.world.production.producer import Producer
+
+from .overviewtab import OverviewTab
 
 
 class ProductionOverviewTab(OverviewTab):
 	widget = 'overview_productionbuilding.xml'
-	helptext = _lazy("Production overview")
+	helptext = LazyT("Production overview")
 	production_line_gui_xml = 'overview_productionline.xml'
 
 	ACTIVE_PRODUCTION_ANIM_DIR = "content/gui/images/animations/cogs/large"
@@ -98,7 +99,7 @@ class ProductionOverviewTab(OverviewTab):
 
 			centered_container = container.findChild(name='centered_production_icons')
 			center_y = self._center_production_line(container, production)
-			centered_container.position = (centered_container.position[0], center_y)
+			centered_container.position = (centered_container.position[0], center_y - 44 // 2)
 			self._set_resource_amounts(container, production)
 
 			if production.is_paused():
@@ -161,7 +162,7 @@ class ProductionOverviewTab(OverviewTab):
 			self._draw_pretty_arrows(parent_container, input_amount, x=58, y=center_y, out=False)
 		if output_amount > 0:
 			self._draw_pretty_arrows(parent_container, output_amount, x=96, y=center_y, out=True)
-		return center_y
+		return center_y + self.ICON_HEIGHT // 2
 
 	def _draw_pretty_arrows(self, parent_container, amount, x=0, y=0, out=False):
 		"""Draws incoming or outgoing arrows for production line container."""
@@ -297,7 +298,7 @@ class LumberjackOverviewTab(ProductionOverviewTab):
 			icon.image = "content/gui/images/buttons/buildmenu_button_bg_bw.png"
 			button.path = 'icons/tabwidget/lumberjackcamp/no_area_build'
 		button.min_size = button.max_size = button.size = (46, 46)
-		button.helptext = _('Fill range with {how_many} trees').format(
+		button.helptext = T('Fill range with {how_many} trees').format(
 			how_many=field_comp.how_many)
 
 		res_bar = self.instance.session.ingame_gui.resource_overview
@@ -318,7 +319,7 @@ class SmallProductionOverviewTab(ProductionOverviewTab):
 	Requires the building class using this tab to implement get_providers().
 	"""
 	widget = 'overview_farm.xml'
-	helptext = _lazy("Production overview")
+	helptext = LazyT("Production overview")
 	production_line_gui_xml = "overview_farmproductionline.xml"
 
 	# the farm uses small buttons
@@ -329,7 +330,7 @@ class SmallProductionOverviewTab(ProductionOverviewTab):
 		possible_res = set(res for field in self.instance.get_providers()
 		                       for res in field.provided_resources)
 		all_farm_productions = self.instance.get_component(Producer).get_productions()
-		productions = set([p for p in all_farm_productions
+		productions = {p for p in all_farm_productions
 		                     for res in p.get_consumed_resources().keys()
-		                   if res in possible_res])
+		                   if res in possible_res}
 		return sorted(productions, key=operator.methodcaller('get_production_line_id'))

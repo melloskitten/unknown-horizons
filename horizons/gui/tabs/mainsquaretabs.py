@@ -23,19 +23,19 @@ from functools import partial
 
 from fife.extensions.pychan.widgets import Label
 
-from horizons.gui.widgets.productionoverview import ProductionOverview
-from horizons.gui.tabs import OverviewTab
-from horizons.gui.tabs.residentialtabs import setup_tax_slider
-
-from horizons.i18n import _lazy
-from horizons.util.python.callback import Callback
-from horizons.messaging import UpgradePermissionsChanged, PlayerLevelUpgrade
 from horizons.command.uioptions import SetSettlementUpgradePermissions
-from horizons.constants import BUILDINGS, TIER
-from horizons.component.tradepostcomponent import TradePostComponent
 from horizons.component.collectingcomponent import CollectingComponent
 from horizons.component.namedcomponent import NamedComponent
 from horizons.component.selectablecomponent import SelectableComponent
+from horizons.component.tradepostcomponent import TradePostComponent
+from horizons.constants import BUILDINGS, TIER
+from horizons.gui.widgets.productionoverview import ProductionOverview
+from horizons.i18n import gettext as T, gettext_lazy as LazyT
+from horizons.messaging import PlayerLevelUpgrade, UpgradePermissionsChanged
+from horizons.util.python.callback import Callback
+
+from .overviewtab import OverviewTab
+from .residentialtabs import setup_tax_slider
 
 
 class MainSquareTab(OverviewTab):
@@ -66,7 +66,7 @@ class AccountTab(MainSquareTab):
 	"""Display basic income and expenses of a settlement"""
 	widget = 'tab_account.xml'
 	icon_path = 'icons/tabwidget/warehouse/account'
-	helptext = _lazy("Account")
+	helptext = LazyT("Account")
 
 	def init_widget(self):
 		super(AccountTab, self).init_widget()
@@ -79,7 +79,7 @@ class AccountTab(MainSquareTab):
 		self.prod_overview = ProductionOverview(self._windows, self.settlement)
 
 		self.widget.child_finder('headline').text = self.settlement.get_component(NamedComponent).name
-		self.widget.child_finder('headline').helptext = _('Click to change the name of your settlement')
+		self.widget.child_finder('headline').helptext = T('Click to change the name of your settlement')
 
 		path = 'icons/widgets/cityinfo/settlement_%s' % self.settlement.owner.color.name
 		self.widget.child_finder('show_production_overview').path = path
@@ -115,17 +115,18 @@ class AccountTab(MainSquareTab):
 
 
 class MainSquareOverviewTab(AccountTab):
-	helptext = _lazy('Main square overview')
+	helptext = LazyT('Main square overview')
 
 	def init_widget(self):
 		super(MainSquareOverviewTab, self).init_widget()
 		self.widget.child_finder('headline').text = self.settlement.get_component(NamedComponent).name
-		self.widget.child_finder('headline').helptext = _('Click to change the name of your settlement')
+		self.widget.child_finder('headline').helptext = T('Click to change the name of your settlement')
 
 
 class MainSquareSettlerLevelTab(MainSquareTab):
 	widget = "mainsquare_inhabitants.xml"
-	LEVEL = None # overwrite in subclass
+	# overwrite in subclass
+	LEVEL = None # type: int
 
 	def __init__(self, instance):
 		self.max_inhabitants = instance.session.db.get_tier_inhabitants_max(self.__class__.LEVEL)
@@ -141,15 +142,15 @@ class MainSquareSettlerLevelTab(MainSquareTab):
 		val_label = self.widget.child_finder('tax_val_label')
 		setup_tax_slider(slider, val_label, self.settlement, self.__class__.LEVEL)
 		self.widget.child_finder('tax_val_label').text = unicode(self.settlement.tax_settings[self.__class__.LEVEL])
-		self.widget.child_finder('headline').text = _(self.instance.session.db.get_settler_name(self.__class__.LEVEL))
+		self.widget.child_finder('headline').text = T(self.instance.session.db.get_settler_name(self.__class__.LEVEL))
 
 		if self.__class__.LEVEL == TIER.CURRENT_MAX:
 			# highest currently playable tier => upgrades not possible
 			upgrades_label = self.widget.child_finder('upgrades_lbl')
-			upgrades_label.text = _("Upgrade not possible:")
+			upgrades_label.text = T("Upgrade not possible:")
 			upgrades_button = self.widget.child_finder('allow_upgrades')
 			upgrades_button.set_inactive()
-			upgrades_button.helptext = _("This is the highest playable tier for now!")
+			upgrades_button.helptext = T("This is the highest playable tier for now!")
 
 	@classmethod
 	def shown_for(cls, instance):
@@ -195,10 +196,10 @@ class MainSquareSettlerLevelTab(MainSquareTab):
 		if self.__class__.LEVEL < TIER.CURRENT_MAX:
 			if self.settlement.upgrade_permissions[self.__class__.LEVEL]:
 				upgrades_button.set_active()
-				upgrades_button.helptext = _("Don't allow upgrades")
+				upgrades_button.helptext = T("Don't allow upgrades")
 			else:
 				upgrades_button.set_inactive()
-				upgrades_button.helptext = _('Allow upgrades')
+				upgrades_button.helptext = T('Allow upgrades')
 
 		# refresh residents per house info
 		resident_counts = self._get_resident_counts()

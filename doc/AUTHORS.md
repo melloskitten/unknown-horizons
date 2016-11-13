@@ -7,6 +7,7 @@
 #### Programming
 * MasterofJOKers ()
 * Kilian] (Kilian Köppchen)
+* squiddy (Reiner Gerecke)
 
 #### Sound and Music Artists
 * Ollo123 ()
@@ -136,6 +137,7 @@
 * MarkusHackspacher (code fixes)
 * xseanl (tooltips added)
 * martingeiger (added new inhabitant grafics)
+* CrafterSvK (added some patches)
 
 ## Translators
 

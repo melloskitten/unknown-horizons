@@ -25,6 +25,7 @@ import logging
 from fife import fife
 
 import horizons.globals
+from horizons.i18n import gettext as T
 from horizons.util.loaders.actionsetloader import ActionSetLoader
 from horizons.world.ingametype import IngameType
 from horizons.world.production.producer import Producer
@@ -34,7 +35,7 @@ class BuildingClass(IngameType):
 	log = logging.getLogger('world.building')
 
 	basepackage = 'horizons.world.building.'
-	classstring = 'Building['
+	classstring = 'Building[{id}]'
 
 	def __new__(self, db, id, yaml_data):
 		return super(BuildingClass, self).__new__(self, id, yaml_data)
@@ -116,10 +117,10 @@ class BuildingClass(IngameType):
 	def get_tooltip(self):
 		"""Returns tooltip text of a building class.
 		ATTENTION: This text is automatically translated when loaded
-		already. DO NOT wrap the return value of this method in _()!
+		already. DO NOT wrap the return value of this method in T()!
 		@return: string tooltip_text
 		"""
 		# You usually do not need to change anything here when translating
-		tooltip = _("{building}: {description}")
+		tooltip = T("{building}: {description}")
 		return tooltip.format(building=self._name,
 		                      description=self.tooltip_text)

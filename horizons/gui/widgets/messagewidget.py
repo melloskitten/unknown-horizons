@@ -19,23 +19,23 @@
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # ###################################################
 
+import itertools
 import logging
 import textwrap
-import itertools
 
 from fife.extensions.pychan.widgets import Icon
 
 import horizons.globals
-
+from horizons.component.ambientsoundcomponent import AmbientSoundComponent
 from horizons.extscheduler import ExtScheduler
+from horizons.gui.util import load_uh_widget
+from horizons.gui.widgets.imagebutton import ImageButton
+from horizons.i18n import gettext as T
+from horizons.i18n.voice import get_speech_file
+from horizons.scheduler import Scheduler
 from horizons.util.living import LivingObject
 from horizons.util.python.callback import Callback
 from horizons.util.shapes import Point
-from horizons.scheduler import Scheduler
-from horizons.gui.util import load_uh_widget
-from horizons.gui.widgets.imagebutton import ImageButton
-from horizons.component.ambientsoundcomponent import AmbientSoundComponent
-from horizons.i18n.voice import get_speech_file
 
 
 class MessageWidget(LivingObject):
@@ -113,6 +113,7 @@ class MessageWidget(LivingObject):
 				break
 		if index > -1:
 			del self.active_messages[index]
+			self.draw_widget()
 
 	def add_custom(self, messagetext, point=None, msg_type=None, visible_for=40, icon_id=1):
 		""" See docstring for add().
@@ -205,16 +206,7 @@ class MessageWidget(LivingObject):
 		# stop hiding if a new text has been shown
 		ExtScheduler().rem_call(self, self.hide_text)
 
-		try:
-			text = self.active_messages[index].message
-		except IndexError:
-			# Something went wrong, try to find out what. Also see #2273.
-			self.log.error(u'Tried to access message at index %s, only have %s. Messages:',
-			               index, len(self.active_messages))
-			self.log.error(u'\n'.join(unicode(m) for m in self.active_messages))
-			text = (u'Error trying to access message!\n'
-			        u'Please report a bug. Thanks!')
-
+		text = self.active_messages[index].message
 		text = text.replace(r'\n', self.CHARS_PER_LINE * ' ')
 		text = text.replace('[br]', self.CHARS_PER_LINE * ' ')
 		text = textwrap.fill(text, self.CHARS_PER_LINE)
@@ -339,10 +331,9 @@ class _IngameMessage(object):
 		icon = icon_id if icon_id is not None else horizons.globals.db.get_msg_icon_id(id)
 		self.path = horizons.globals.db.get_msg_icon_path(icon)
 		if message is not None:
-			assert isinstance(message, unicode), "Message is not unicode: %s" % message
 			self.message = message
 		else:
-			msg = _(horizons.globals.db.get_msg_text(id))
+			msg = T(horizons.globals.db.get_msg_text(id))
 			#TODO why can message_dict not be used with custom messages (`if` branch above)
 			try:
 				self.message = msg.format(**message_dict if message_dict is not None else {})

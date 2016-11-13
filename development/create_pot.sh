@@ -52,7 +52,8 @@ import re; FORMAT = re.compile(r'{.*}')
 try:
   import polib
 except ImportError:
-  from horizons.ext import polib
+  print('The polib package is needed to run the create_pot.sh.')
+  sys.exit(1)
 po = polib.pofile('$1', wrapwidth=80)
 for entry in [e for e in po if not e.obsolete]:
   if FORMAT.search(entry.msgid) and 'python-brace-format' not in entry.flags:
@@ -99,9 +100,9 @@ echo "=> Creating UH gettext pot template file at $RESULT_FILE."
              --package-name='Unknown Horizons' \
              --package-version="$VERSION" \
              --msgid-bugs-address='team@unknown-horizons.org' \
-             --keyword=N_:1,2 \
-             --keyword=_lazy
-# --keyword=N_ also catches N_() plural-aware ngettext calls
+             --keyword=NT:1,2 \
+             --keyword=LazyT \
+             --keyword=T
 
 # SQL files
 python2 development/extract_strings_from_sqlite.py > "$SQL_POT_FILE"

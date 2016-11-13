@@ -19,10 +19,10 @@
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # ###################################################
 
+from horizons.command import Command, GenericCommand
 from horizons.entities import Entities
-from horizons.util.worldobject import WorldObject
-from horizons.command import GenericCommand, Command
-from horizons.util.worldobject import WorldObjectNotFound
+from horizons.util.worldobject import WorldObject, WorldObjectNotFound
+
 
 class GenericUnitCommand(GenericCommand):
 	"""Same as GenericCommand, but checks if issuer == owner in __call__"""
@@ -36,7 +36,7 @@ class GenericUnitCommand(GenericCommand):
 			return # don't move enemy units
 		else:
 			return super(GenericUnitCommand, self).__call__(issuer)
-		
+
 class Act(GenericUnitCommand):
 	"""Command class that moves a unit.
 	@param unit: Instance of Unit

@@ -19,20 +19,21 @@
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # ###################################################
 
-import logging
-
 import json
+import logging
 from itertools import groupby
+
 from fife.extensions.pychan.widgets import HBox, Icon, Label
 
-from horizons.util.python.callback import Callback
-from horizons.component.ambientsoundcomponent import AmbientSoundComponent
 from horizons.command.game import UnPauseCommand
 from horizons.command.misc import Chat
-from horizons.gui.widgets.pickbeltwidget import PickBeltWidget
+from horizons.component.ambientsoundcomponent import AmbientSoundComponent
 from horizons.gui.widgets.imagebutton import OkButton
+from horizons.gui.widgets.pickbeltwidget import PickBeltWidget
 from horizons.gui.windows import Window
+from horizons.i18n import gettext as T, gettext_lazy as LazyT
 from horizons.scenario.actions import show_message
+from horizons.util.python.callback import Callback
 
 
 class LogBook(PickBeltWidget, Window):
@@ -46,9 +47,9 @@ class LogBook(PickBeltWidget, Window):
 
 	widget_xml = 'captains_log.xml'
 	page_pos = (170, 38)
-	sections = (('logbook', _('Logbook')),
-	            ('statistics', _('Statistics')),
-	            ('chat_overview', _('Chat')))
+	sections = (('logbook', LazyT('Logbook')),
+	            ('statistics', LazyT('Statistics')),
+	            ('chat_overview', LazyT('Chat')))
 
 	def __init__(self, session, windows):
 		self.statistics_index = [i for i, sec in self.sections].index('statistics')
@@ -184,10 +185,10 @@ class LogBook(PickBeltWidget, Window):
 				self._display_parameters_on_page([], 'right') # display empty page
 		else:
 			self._display_parameters_on_page([
-			  ['Headline', _("Emptiness")],
+			  ['Headline', T("Emptiness")],
 			  ['Image', "content/gui/images/background/hr.png"],
 			  ['Label', u"\n\n"],
-			  ['Label', _('There is nothing written in your logbook yet!')],
+			  ['Label', T('There is nothing written in your logbook yet!')],
 				], 'left')
 		self.backward_button.set_active()
 		self.forward_button.set_active()
@@ -217,7 +218,7 @@ class LogBook(PickBeltWidget, Window):
 		def _label(text, font='default'):
 			try:
 				return Label(text=unicode(text), wrap_text=True,
-				             min_size=(335, 0), max_size=(335, 508),
+				             min_size=(325, 0), max_size=(325, 1024),
 				             font=font)
 			except RuntimeError:
 				return None

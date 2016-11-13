@@ -19,15 +19,16 @@
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # ###################################################
 
-from horizons.gui.tabs.tabinterface import TabInterface
-from horizons.i18n import _lazy
-from horizons.extscheduler import ExtScheduler
 from horizons.component.storagecomponent import StorageComponent
+from horizons.extscheduler import ExtScheduler
+from horizons.gui.tabs.tabinterface import TabInterface
+from horizons.i18n import gettext_lazy as LazyT
+
 
 class InventoryTab(TabInterface):
 	widget = 'island_inventory.xml'
 	icon_path = 'icons/tabwidget/common/inventory'
-	helptext = _lazy("Settlement inventory")
+	helptext = LazyT("Settlement inventory")
 
 	def __init__(self, instance=None):
 		self.instance = instance

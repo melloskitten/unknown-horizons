@@ -22,13 +22,15 @@
 
 from fife.extensions.pychan.widgets import Icon
 
-from horizons.gui.tabs import OverviewTab
+from horizons.component.selectablecomponent import SelectableComponent
+from horizons.entities import Entities
 from horizons.gui.util import load_uh_widget
 from horizons.gui.widgets.imagebutton import ImageButton
-from horizons.i18n import _lazy
+from horizons.i18n import gettext_lazy as LazyT
 from horizons.util.python.callback import Callback
-from horizons.entities import Entities
-from horizons.component.selectablecomponent import SelectableComponent
+
+from .overviewtab import OverviewTab
+
 
 class BuildRelatedTab(OverviewTab):
 	"""
@@ -39,7 +41,7 @@ class BuildRelatedTab(OverviewTab):
 	"""
 	widget = 'related_buildings.xml'
 	icon_path = 'icons/tabwidget/production/related'
-	helptext = _lazy("Build related buildings")
+	helptext = LazyT("Build related buildings")
 	template_gui_xml = 'related_buildings_container.xml'
 
 	def refresh(self):

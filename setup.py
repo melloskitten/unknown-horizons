@@ -21,6 +21,7 @@
 # ###################################################
 
 
+from __future__ import print_function
 from distutils.core import setup
 from distutils.command.build import build
 from distutils.spawn import find_executable
@@ -29,10 +30,6 @@ import os
 import glob
 import platform
 from shutil import rmtree, copytree
-
-# Install dummy gettext before any imports from horizons
-import gettext
-gettext.install("")
 
 from horizons.constants import VERSION
 

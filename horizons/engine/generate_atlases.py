@@ -21,6 +21,8 @@
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # ###################################################
 
+from __future__ import print_function
+
 import glob
 import json
 import logging
@@ -33,8 +35,8 @@ import traceback
 
 try:
 	import cPickle as pickle
-except:
-	import pickle
+except ImportError:
+	import pickle # type: ignore
 
 # add paths for Mac Os X app container (Unknown Horizons.app)
 app_python_lib_path = os.path.join(os.getcwd(), 'lib', 'python2.7')
@@ -52,8 +54,10 @@ except ImportError:
 	      ' is needed to run the atlas generator.')
 	sys.exit(1)
 
+# TODO We can probably remove the type ignore in the next release of typeshed/mypy
+#      See https://github.com/python/typeshed/commit/08ac3b7742f1fd55f801ac66d7517cf60aa471d6
 # make sure os.path.getmtime returns ints
-os.stat_float_times(False)
+os.stat_float_times(False) # type: ignore
 
 # make this script work both when started inside development and in the uh root dir
 if not os.path.exists('content'):
@@ -61,18 +65,18 @@ if not os.path.exists('content'):
 assert os.path.exists('content'), 'Content dir not found.'
 
 sys.path.append('.')
-from run_uh import init_environment
+from run_uh import init_environment # isort:skip
 init_environment(False)
 
 class DummyFife:
 	use_atlases = False
-import horizons.globals
-horizons.globals.fife = DummyFife()
+import horizons.globals # isort:skip
+horizons.globals.fife = DummyFife() # type: ignore
 
-from horizons.constants import PATHS
-from horizons.util.dbreader import DbReader
-from horizons.util.loaders.actionsetloader import ActionSetLoader
-from horizons.util.loaders.tilesetloader import TileSetLoader
+from horizons.constants import PATHS # isort:skip
+from horizons.util.dbreader import DbReader # isort:skip
+from horizons.util.loaders.actionsetloader import ActionSetLoader # isort:skip
+from horizons.util.loaders.tilesetloader import TileSetLoader # isort:skip
 
 
 class AtlasEntry(object):
@@ -251,7 +255,7 @@ class AtlasGenerator(object):
 		return paths
 
 	def recreate(self):
-		print 'Recreating all atlases'
+		print('Recreating all atlases')
 
 		self._init_sets()
 		paths = self._get_paths()
@@ -268,10 +272,10 @@ class AtlasGenerator(object):
 		self.save()
 
 	def _update_selected_books(self, update_books):
-		print 'Updating some of the atlases:'
+		print('Updating some of the atlases:')
 		for book in sorted(update_books, key=lambda book: int(book.id)):
-			print book.path
-		print
+			print(book.path)
+		print()
 
 		self._save_sets()
 		self._save_books(update_books)
@@ -408,7 +412,7 @@ class AtlasGenerator(object):
 if __name__ == '__main__':
 	args = sys.argv[1:]
 	if len(args) != 1:
-		print 'Usage: python2 generate_atlases.py max_size'
+		print('Usage: python2 generate_atlases.py max_size')
 		exit(1)
 
 	max_size = int(math.pow(2, int(math.log(int(args[0]), 2))))

@@ -28,6 +28,7 @@ import sys
 from horizons import network
 from horizons.network.server import Server
 
+
 def fork():
 	try:
 		pid = os.fork()
@@ -104,7 +105,7 @@ try:
 except (ValueError, IndexError):
 	port = 0
 
-if host == None or port == None or port <= 0:
+if host is None or port is None or port <= 0:
 	usage()
 	sys.exit(1)
 

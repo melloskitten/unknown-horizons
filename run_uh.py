@@ -29,21 +29,22 @@ a pointer to the next step. Have fun :-)
 This is the Unknown Horizons launcher; it looks for FIFE and tries
 to start the game. You usually don't need to work with this directly.
 If you want to dig into the game, continue to horizons/main.py. """
+from __future__ import print_function
 
-import sys
-import os
-import os.path
-import gettext
-import time
-import imp
 import functools
+import imp
 import locale
 import logging
 import logging.config
 import logging.handlers
-import signal
-import traceback
+import os
+import os.path
 import platform
+import signal
+import sys
+import time
+import traceback
+
 
 # NOTE: do NOT import anything from horizons.* into global scope
 # this will break any run_uh imports from other locations (e.g. _get_version())
@@ -358,8 +359,6 @@ def init_environment(use_fife):
 	"""Sets up everything.
 
 	Use in any program that requires access to FIFE and UH modules."""
-	# install dummy translation
-	gettext.install('', unicode=True)
 	if use_fife:
 		setup_fife()
 

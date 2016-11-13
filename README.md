@@ -2,6 +2,7 @@
 ============================================================
 
 [![Build Status](https://travis-ci.org/unknown-horizons/unknown-horizons.svg?branch=master)](https://travis-ci.org/unknown-horizons/unknown-horizons)
+[![Coverage Status](https://coveralls.io/repos/github/unknown-horizons/unknown-horizons/badge.svg?branch=master)](https://coveralls.io/github/unknown-horizons/unknown-horizons?branch=master)
  [![Bountysource](https://www.bountysource.com/badge/team?team_id=9261&style=bounties_received)](https://www.bountysource.com/teams/unknown-horizons/issues?utm_source=unknown-horizons&utm_medium=shield&utm_campaign=bounties_received)
  [![Translation status](https://hosted.weblate.org/widgets/uh/-/shields-badge.svg)](https://hosted.weblate.org/engage/uh/?utm_source=widget)
  [![#unknown-horizons on Freenode](https://img.shields.io/badge/freenode-%23unknown--horizons-green.svg)](https://webchat.freenode.net/?channels=unknown-horizons)
@@ -25,9 +26,9 @@ For installation instructions check the "Downloads" section on
 
 To get the latest version of the game, you have to build it from source:
 
- * [Instructions for GNU/Linux](http://www.unknown-horizons.org/download/sources/s-linux/)
- * [Instructions for Windows](http://www.unknown-horizons.org/download/sources/s-windows/)
- * [Instructions for OS X](http://www.unknown-horizons.org/download/sources/s-osx/)
+ * [Instructions for GNU/Linux](https://github.com/unknown-horizons/unknown-horizons/wiki/Linux)
+ * [Instructions for Windows](https://github.com/unknown-horizons/unknown-horizons/wiki/Windows)
+ * [Instructions for OS X](https://github.com/unknown-horizons/unknown-horizons/wiki/MacOS)
 
 If you want to start hacking on Unknown Horizons, check out [this guide](https://github.com/unknown-horizons/unknown-horizons/wiki/Getting-started) and contact us to help you get started. We have easy tasks for starters [here](https://github.com/unknown-horizons/unknown-horizons/issues?q=is%3Aopen+is%3Aissue+label%3Astarter).
 

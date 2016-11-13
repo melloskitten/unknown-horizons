@@ -19,23 +19,24 @@
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # ###################################################
 
+import json
 import logging
 import os
 import os.path
-import json
 import shutil
 import tempfile
-
 from collections import defaultdict
 from sqlite3 import OperationalError
+
 from yaml.parser import ParserError
 
-from horizons.constants import BUILDINGS, VERSION, UNITS
+from horizons.constants import BUILDINGS, UNITS, VERSION
 from horizons.entities import Entities
 from horizons.util.dbreader import DbReader
 from horizons.util.python import decorators
 from horizons.util.shapes import Rect
 from horizons.util.yamlcache import YamlCache
+
 
 class SavegameTooOld(Exception):
 	def __init__(self, msg=None, revision=None):
@@ -395,7 +396,7 @@ class SavegameUpgrader(object):
 
 	def _upgrade_to_rev74(self, db):
 		db("INSERT INTO metadata VALUES (?, ?)", "selected_tab", None)
-		
+
 	def _upgrade_to_rev75(self, db):
 		# some production line id changes
 
@@ -424,7 +425,7 @@ class SavegameUpgrader(object):
 		if rev < VERSION.SAVEGAMEREVISION :
 			if not SavegameUpgrader.can_upgrade(rev):
 				raise SavegameTooOld(revision=rev)
-			
+
 			self.log.warning('Discovered old savegame file, auto-upgrading: %s -> %s' % \
 						     (rev, VERSION.SAVEGAMEREVISION))
 			db = DbReader(self.final_path)
@@ -504,7 +505,7 @@ class SavegameUpgrader(object):
 			self.using_temp = True
 			handle, self.final_path = tempfile.mkstemp(prefix='uh-savegame.' + os.path.basename(os.path.splitext(self.original_path)[0]) + '.', suffix='.sqlite')
 			os.close(handle)
-			shutil.copyfile(self.original_path, self.final_path)			
+			shutil.copyfile(self.original_path, self.final_path)
 			self._upgrade()
 		return self.final_path
 

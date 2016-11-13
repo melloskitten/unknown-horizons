@@ -19,17 +19,19 @@
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # ###################################################
 
+import weakref
+
 from fife import fife
 
 import horizons.globals
-import weakref
-
-from horizons.gui.mousetools.navigationtool import NavigationTool
 from horizons.command.building import Tear
+from horizons.constants import BUILDINGS
+from horizons.gui.mousetools.navigationtool import NavigationTool
+from horizons.i18n import gettext as T, ngettext as NT
+from horizons.messaging import WorldObjectDeleted
 from horizons.util.python.weaklist import WeakList
 from horizons.util.shapes import Point
-from horizons.constants import BUILDINGS
-from horizons.messaging import WorldObjectDeleted
+
 
 class TearingTool(NavigationTool):
 	"""
@@ -83,19 +85,19 @@ class TearingTool(NavigationTool):
 				self.coords = coords
 			self._mark(self.coords, coords)
 			selection_list_copy = [building for building in self.selected]
-			for building in selection_list_copy:
-				self.session.view.renderer['InstanceRenderer'].removeColored(building._instance)
-				if (not building.id in BUILDINGS.EXPAND_RANGE) or self.confirm_ranged_delete(building):
-					Tear(building).execute(self.session)
-			else:
-				if self._hovering_over:
-					# we're hovering over a building, but none is selected, so this tear action isn't allowed
-					warehouses = [ b for b in self._hovering_over if
-					               b.id == BUILDINGS.WAREHOUSE and b.owner.is_local_player]
-					if warehouses:
-						# tried to tear a warehouse, this is especially non-tearable
-						pos = warehouses[0].position.origin
-						self.session.ingame_gui.message_widget.add(point=pos, string_id="WAREHOUSE_NOT_TEARABLE" )
+			if self.selected:
+				for building in selection_list_copy:
+					self.session.view.renderer['InstanceRenderer'].removeColored(building._instance)
+					if (not building.id in BUILDINGS.EXPAND_RANGE) or self.confirm_ranged_delete(building):
+						Tear(building).execute(self.session)
+			elif self._hovering_over:
+				# we're hovering over a building, but none is selected, so this tear action isn't allowed
+				warehouses = [ b for b in self._hovering_over if
+					       b.id == BUILDINGS.WAREHOUSE and b.owner.is_local_player]
+				if warehouses:
+					# tried to tear a warehouse, this is especially non-tearable
+					pos = warehouses[0].position.origin
+					self.session.ingame_gui.message_widget.add(point=pos, string_id="WAREHOUSE_NOT_TEARABLE" )
 
 			self.selected = WeakList()
 			self._hovering_over = WeakList()
@@ -103,17 +105,17 @@ class TearingTool(NavigationTool):
 				self.tear_tool_active = False
 				self.on_escape()
 			evt.consume()
-			
+
 	def confirm_ranged_delete(self, building):
 			buildings_to_destroy = len(Tear.additional_removals_after_tear(building)[0])
 			if buildings_to_destroy == 0:
 				return True
-			
-			title = _("Destroy all buildings")
-			msg = _("This will destroy all the buildings that fall outside of"
+
+			title = T("Destroy all buildings")
+			msg = T("This will destroy all the buildings that fall outside of"
 		            " the settlement range.")
 			msg += u"\n\n"
-			msg += N_("%s additional building will be destroyed.",
+			msg += NT("%s additional building will be destroyed.",
 		              "%s additional buildings will be destroyed",
 		              buildings_to_destroy) % buildings_to_destroy
 			return building.session.ingame_gui.open_popup(title, msg, show_cancel_button=True)

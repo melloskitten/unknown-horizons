@@ -20,10 +20,11 @@
 # ###################################################
 
 from horizons.component import Component
-from horizons.util.shapes import Annulus, Circle
-from horizons.util.python.callback import Callback
 from horizons.scheduler import Scheduler
+from horizons.util.python.callback import Callback
+from horizons.util.shapes import Annulus, Circle
 from horizons.world.units.unitexeptions import MoveNotPossible
+
 
 class StanceComponent(Component):
 	"""
@@ -239,6 +240,8 @@ class AggressiveStance(LimitedMoveStance):
 			self.instance.fire_all_weapons(target.position.center)
 
 class HoldGroundStance(LimitedMoveStance):
+	"""Stance in radius and not attacks units in close range
+	"""
 
 	NAME = 'hold_ground_stance'
 
@@ -248,10 +251,9 @@ class HoldGroundStance(LimitedMoveStance):
 		self.move_range = 15
 
 class NoneStance(StanceComponent):
-
+	"""No settings for stance
+	"""
 	NAME = 'none_stance'
-
-	pass
 
 class FleeStance(StanceComponent):
 	"""

@@ -20,14 +20,16 @@
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # ###################################################
 
+from __future__ import print_function
+
 from fife import fife
 from fife.extensions.pychan.widgets import Button
 
 import horizons.globals
-
 from horizons.gui.keylisteners.ingamekeylistener import KeyConfig
 from horizons.gui.util import load_uh_widget
 from horizons.gui.widgets.imagebutton import OkButton
+from horizons.i18n import gettext as T
 from horizons.util.python.callback import Callback
 
 
@@ -94,7 +96,7 @@ class HotkeyConfiguration(object):
 		self.listener.activate()
 		self.update_buttons_text()
 		button.font = 'default'
-		button.text = _(u"Press key…")
+		button.text = T(u"Press key…")
 
 	def _detect_keypress(self, event):
 		if not self.detecting:
@@ -143,9 +145,9 @@ class HotkeyConfiguration(object):
 				self.last_combination = []
 				return
 
-			message = _("{key} is already set to {action}.").format(key=key_name, action=oldaction)
-			message += u" " + _("Would you like to overwrite it?")
-			confirmed = horizons.main._modules.gui.open_popup(_("Confirmation for overwriting"), message, show_cancel_button=True)
+			message = T("{key} is already set to {action}.").format(key=key_name, action=oldaction)
+			message += u" " + T("Would you like to overwrite it?")
+			confirmed = horizons.main._modules.gui.open_popup(T("Confirmation for overwriting"), message, show_cancel_button=True)
 			if confirmed:
 				horizons.globals.fife.replace_key_for_action(oldaction, key_name, "UNASSIGNED")
 			else:
@@ -194,7 +196,7 @@ class HotkeyConfiguration(object):
 			k = custom_key_actions[action]
 			if key_name in k:
 				return action
-		print "Action name not found. Key name (" + key_name + ") must be wrong. This is not supposed to ever happen"
+		print("Action name not found. Key name (" + key_name + ") must be wrong. This is not supposed to ever happen")
 
 	def reset_to_default(self):
 		"""Resets all bindings to default"""

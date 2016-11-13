@@ -20,17 +20,19 @@
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # ###################################################
 
+from __future__ import print_function
+
 import functools
 import traceback
 
 from fife.extensions import pychan
 
+import horizons.globals
 from horizons.gui.style import STYLES
+from horizons.gui.widgets.imagebutton import ImageButton
 from horizons.messaging import GuiAction, GuiCancelAction, GuiHover
 from horizons.util.python.callback import Callback
-from horizons.gui.widgets.imagebutton import ImageButton
 
-import horizons.globals
 
 class RenameLabel(pychan.widgets.Label):
 	"""A regular label that signals that it will display a rename dialog when clicked upon (by changing the cursor)"""
@@ -44,9 +46,9 @@ def handle_gcn_exception(e, msg=None):
 	@param msg: additional info as string
 	"""
 	traceback.print_stack()
-	print 'Caught RuntimeError on gui interaction, assuming irrelevant gcn::exception.'
+	print('Caught RuntimeError on gui interaction, assuming irrelevant gcn::exception.')
 	if msg:
-		print msg
+		print(msg)
 
 def init_pychan():
 	"""General pychan initiation for uh"""
@@ -188,9 +190,9 @@ def setup_cursor_change_on_hover():
 		cls.disable_cursor_change_on_hover = disable_cursor_change_on_hover
 		cls.enable_cursor_change_on_hover = enable_cursor_change_on_hover
 
-	make_cursor_change_on_hover_class( pychan.widgets.WIDGETS['TextField'] )
-	make_cursor_change_on_hover_class( RenameLabel )
-	make_cursor_change_on_hover_class( RenameImageButton )
+	make_cursor_change_on_hover_class(pychan.widgets.WIDGETS['TextField'])
+	make_cursor_change_on_hover_class(RenameLabel)
+	make_cursor_change_on_hover_class(RenameImageButton)
 
 
 	# TODO: if the widget is hidden while the cursor is above it,
@@ -215,7 +217,7 @@ def setup_trigger_signals_on_action():
 					self.capture(Callback(GuiAction.broadcast, self), "action", "action_listener")
 			return wrapper
 
-		cls.__init__ = add_action_triggers_a_signal( cls.__init__ )
+		cls.__init__ = add_action_triggers_a_signal(cls.__init__)
 
 	make_action_trigger_a_signal(pychan.widgets.Widget)
 
@@ -229,7 +231,7 @@ def setup_trigger_signals_on_hover():
 				self.capture(Callback(GuiHover.broadcast, self), "mouseEntered", "action_listener")
 			return wrapper
 
-		cls.__init__ = add_hover_triggers_a_signal( cls.__init__ )
+		cls.__init__ = add_hover_triggers_a_signal(cls.__init__)
 
 	make_hover_trigger_a_signal(pychan.widgets.WIDGETS['OkButton'])
 	make_hover_trigger_a_signal(pychan.widgets.WIDGETS['CancelButton'])

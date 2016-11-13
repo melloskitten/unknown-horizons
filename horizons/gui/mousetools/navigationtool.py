@@ -21,17 +21,18 @@
 # ###################################################
 
 from fife import fife
-import horizons.globals
+from fife.extensions.pychan.widgets import Icon
 
+import horizons.globals
+from horizons.constants import LAYERS, VIEW
+from horizons.extscheduler import ExtScheduler
 from horizons.gui.mousetools.cursortool import CursorTool
+from horizons.i18n import gettext as T
+from horizons.messaging import HoverInstancesChanged
+from horizons.util.lastactiveplayersettlementmanager import LastActivePlayerSettlementManager
 from horizons.util.python.weaklist import WeakList
 from horizons.util.worldobject import WorldObject
-from horizons.util.lastactiveplayersettlementmanager import LastActivePlayerSettlementManager
-from horizons.constants import LAYERS, VIEW
-from horizons.messaging import HoverInstancesChanged
-from horizons.extscheduler import ExtScheduler
 
-from fife.extensions.pychan.widgets import Icon
 
 class NavigationTool(CursorTool):
 	"""Navigation Class to process mouse actions ingame"""
@@ -92,7 +93,7 @@ class NavigationTool(CursorTool):
 			def show_evt(self, evt):
 				if self.enabled:
 					x, y = self.cursor_tool.get_world_location(evt).to_tuple()
-					self.icon.helptext = u'%d, %d ' % (x, y) + _("Press H to remove this hint")
+					self.icon.helptext = u'%d, %d ' % (x, y) + T("Press H to remove this hint")
 					self.icon.position_tooltip(evt)
 					self.icon.show_tooltip()
 
@@ -101,6 +102,9 @@ class NavigationTool(CursorTool):
 	def remove(self):
 		if self.__class__.send_hover_instances_update:
 			self.session.view.remove_change_listener(self._schedule_hover_instance_update)
+		if self._hover_instances_update_scheduled:
+			ExtScheduler().rem_call(self, self._send_hover_instance_upate)
+
 		horizons.globals.fife.eventmanager.removeCommandListener(self.cmdlist)
 		super(NavigationTool, self).remove()
 

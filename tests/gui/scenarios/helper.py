@@ -21,7 +21,6 @@
 
 from horizons.scenario import CONDITIONS
 
-
 var_eq = CONDITIONS.get('var_eq')
 settlement_res_stored_greater = CONDITIONS.get('settlement_res_stored_greater')
 settler_level_greater = CONDITIONS.get('settler_level_greater')
@@ -58,4 +57,4 @@ def wait_and_close_logbook(gui):
 	while not gui.find('captains_log'):
 		gui.run()
 
-	gui.trigger('captains_log', 'okButton')
+	gui.trigger('captains_log/okButton')

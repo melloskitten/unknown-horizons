@@ -23,16 +23,15 @@ from fife import fife
 
 import horizons.globals
 from horizons.command.game import SpeedDownCommand, SpeedUpCommand, TogglePauseCommand
-from horizons.component.selectablecomponent import SelectableComponent
 from horizons.component.ambientsoundcomponent import AmbientSoundComponent
-from horizons.constants import BUILDINGS, GAME_SPEED, HOTKEYS, VERSION, LAYERS, VIEW
+from horizons.component.selectablecomponent import SelectableComponent
+from horizons.constants import BUILDINGS, GAME_SPEED, HOTKEYS, LAYERS, VERSION, VIEW
 from horizons.entities import Entities
 from horizons.gui import mousetools
 from horizons.gui.keylisteners import IngameKeyListener, KeyConfig
-from horizons.gui.modules import PauseMenu, HelpDialog, SelectSavegameDialog
-from horizons.gui.modules.ingame import ChatDialog, ChangeNameDialog, CityInfo
-from horizons.gui.tabs import TabWidget, BuildTab, DiplomacyTab, SelectMultiTab
-from horizons.gui.tabs import resolve_tab
+from horizons.gui.modules import HelpDialog, PauseMenu, SelectSavegameDialog
+from horizons.gui.modules.ingame import ChangeNameDialog, ChatDialog, CityInfo
+from horizons.gui.tabs import BuildTab, DiplomacyTab, SelectMultiTab, TabWidget, resolve_tab
 from horizons.gui.tabs.tabinterface import TabInterface
 from horizons.gui.util import load_uh_widget
 from horizons.gui.widgets.logbook import LogBook
@@ -43,11 +42,12 @@ from horizons.gui.widgets.playerssettlements import PlayersSettlements
 from horizons.gui.widgets.playersships import PlayersShips
 from horizons.gui.widgets.resourceoverviewbar import ResourceOverviewBar
 from horizons.gui.windows import WindowManager
-from horizons.messaging import (TabWidgetChanged, SpeedChanged, NewDisaster, MineEmpty,
-                                NewSettlement, PlayerLevelUpgrade, ZoomChanged, GuiAction, GuiHover,
-                                GuiCancelAction, LanguageChanged)
+from horizons.i18n import gettext as T
+from horizons.messaging import (
+	GuiAction, GuiCancelAction, GuiHover, LanguageChanged, MineEmpty, NewDisaster, NewSettlement,
+	PlayerLevelUpgrade, SpeedChanged, TabWidgetChanged, ZoomChanged)
 from horizons.util.lastactiveplayersettlementmanager import LastActivePlayerSettlementManager
-from horizons.util.living import livingProperty, LivingObject
+from horizons.util.living import LivingObject, livingProperty
 from horizons.util.python.callback import Callback
 from horizons.util.worldobject import WorldObject
 from horizons.world.managers.productionfinishediconmanager import ProductionFinishedIconManager
@@ -212,6 +212,7 @@ class IngameGui(LivingObject):
 		return self.windows.open(window)
 
 	def toggle_pause(self):
+		self.set_cursor('default')
 		self.windows.toggle(self.pausemenu)
 
 	def toggle_help(self):
@@ -229,8 +230,8 @@ class IngameGui(LivingObject):
 			return
 
 		if not DiplomacyTab.is_useable(self.session.world):
-			self.windows.open_popup(_("No diplomacy possible"),
-			                        _("Cannot do diplomacy as there are no other players."))
+			self.windows.open_popup(T("No diplomacy possible"),
+			                        T("Cannot do diplomacy as there are no other players."))
 			return
 
 		tab = DiplomacyTab(self, self.session.world)
@@ -455,7 +456,7 @@ class IngameGui(LivingObject):
 		keyval = evt.getKey().getValue()
 
 		if action == _Actions.ESCAPE:
-			return self.on_escape()		
+			return self.on_escape()
 		elif keyval == fife.Key.ENTER:
 			return self.on_return()
 
@@ -467,8 +468,8 @@ class IngameGui(LivingObject):
 		elif action == _Actions.DESTROY_TOOL:
 			self.toggle_destroy_tool()
 		elif action == _Actions.REMOVE_SELECTED:
-			message = _(u"Are you sure you want to delete these objects?")
-			if self.windows.open_popup(_(u"Delete"), message, show_cancel_button=True):
+			message = T(u"Are you sure you want to delete these objects?")
+			if self.windows.open_popup(T(u"Delete"), message, show_cancel_button=True):
 				self.session.remove_selected()
 			else:
 				self.deselect_all()
@@ -493,7 +494,8 @@ class IngameGui(LivingObject):
 		elif action == _Actions.LOGBOOK:
 			self.windows.toggle(self.logbook)
 		elif action == _Actions.DEBUG and VERSION.IS_DEV_VERSION:
-			import pdb; pdb.set_trace()
+			import pdb
+			pdb.set_trace()
 		elif action == _Actions.BUILD_TOOL:
 			self.show_build_menu()
 		elif action == _Actions.ROTATE_RIGHT:

@@ -26,8 +26,10 @@ from fife import fife
 from fife.extensions.pychan.widgets import Icon
 
 import horizons.globals
+from horizons.ext.typing import Any, Optional
 from horizons.gui.util import load_uh_widget
-from horizons.gui.widgets.imagebutton import OkButton, CancelButton
+from horizons.gui.widgets.imagebutton import CancelButton, OkButton
+from horizons.i18n import gettext as T
 from horizons.util.python.callback import Callback
 
 
@@ -122,10 +124,10 @@ class Dialog(Window):
 	modal = False
 
 	# Name of widget that should get the focus once the dialog is shown
-	focus = None
+	focus = None # type: Optional[str]
 
 	# Maps Button names to return values that you can handle in `act`
-	return_events = {}
+	return_events = {} # type: Dict[str, Any]
 
 	def __init__(self, windows):
 		super(Dialog, self).__init__(windows)
@@ -283,9 +285,9 @@ class Popup(Dialog):
 		self._gui = load_uh_widget(wdg_name + '.xml')
 
 		headline = self._gui.findChild(name='headline')
-		headline.text = _(self.windowtitle)
+		headline.text = T(self.windowtitle)
 		message_lbl = self._gui.findChild(name='popup_message')
-		message_lbl.text = _(self.message)
+		message_lbl.text = T(self.message)
 		self._gui.adaptLayout() # recalculate widths
 
 		self.return_events = {OkButton.DEFAULT_NAME: True}
@@ -408,9 +410,9 @@ class WindowManager(object):
 		if advice:
 			msg += advice + u"\n"
 		if details:
-			msg += _("Details: {error_details}").format(error_details=details)
+			msg += T("Details: {error_details}").format(error_details=details)
 		try:
-			self.open_popup( _("Error: {error_message}").format(error_message=windowtitle),
+			self.open_popup( T("Error: {error_message}").format(error_message=windowtitle),
 			                 msg)
 		except SystemExit: # user really wants us to die
 			raise

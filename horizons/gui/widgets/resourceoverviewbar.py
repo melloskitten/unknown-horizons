@@ -19,28 +19,28 @@
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # ###################################################
 
+import functools
+import itertools
 import json
 import weakref
-import itertools
-import functools
 
 from fife import fife
 from fife.extensions.pychan.widgets import HBox, Icon, Label, Spacer
 
 import horizons.globals
-
-from horizons.constants import TIER, RES
+from horizons.component.ambientsoundcomponent import AmbientSoundComponent
 from horizons.component.storagecomponent import StorageComponent
+from horizons.constants import RES, TIER
+from horizons.extscheduler import ExtScheduler
 from horizons.gui.mousetools.buildingtool import BuildingTool
 from horizons.gui.mousetools.navigationtool import NavigationTool
-from horizons.gui.util import load_uh_widget, get_res_icon_path, create_resource_selection_dialog
+from horizons.gui.util import create_resource_selection_dialog, get_res_icon_path, load_uh_widget
+from horizons.i18n import gettext as T
+from horizons.messaging import NewPlayerSettlementHovered, ResourceBarResize, TabWidgetChanged
+from horizons.util.lastactiveplayersettlementmanager import LastActivePlayerSettlementManager
 from horizons.util.pychanchildfinder import PychanChildFinder
 from horizons.util.python.callback import Callback
 from horizons.util.python.decorators import cachedmethod
-from horizons.extscheduler import ExtScheduler
-from horizons.component.ambientsoundcomponent import AmbientSoundComponent
-from horizons.util.lastactiveplayersettlementmanager import LastActivePlayerSettlementManager
-from horizons.messaging import NewPlayerSettlementHovered, ResourceBarResize, TabWidgetChanged
 from horizons.world.player import Player
 
 
@@ -111,7 +111,7 @@ class ResourceOverviewBar(object):
 		self.gold_gui.mapEvents({
 		  "resbar_gold_container/mouseClicked/stats" : self._toggle_stats,
 		  })
-		self.gold_gui.helptext = _("Click to show statistics")
+		self.gold_gui.helptext = T("Click to show statistics")
 		self.stats_gui = None
 
 		self.gui = [] # list of slots
@@ -243,7 +243,7 @@ class ResourceOverviewBar(object):
 				icon.max_size = icon.min_size = icon.size = (24, 24)
 				icon.capture(self._on_res_slot_click, event_name='mouseClicked')
 			else:
-				helptext = _("Click to add a new slot")
+				helptext = T("Click to add a new slot")
 				entry.show() # this will not be filled as the other res
 			background_icon.helptext = helptext
 
@@ -465,15 +465,15 @@ class ResourceOverviewBar(object):
 		# the button should be disabled, but the first case below is shown because
 		# we can't disable it
 		if self._custom_default_resources is None:
-			reset_default_btn.helptext = _("Reset this configuration to the factory default.")
+			reset_default_btn.helptext = T("Reset this configuration to the factory default.")
 			reset_default_btn.capture(Callback(self._drop_settlement_resource_configuration))
 
 		elif self._custom_default_resources != self._get_current_resources():
-			reset_default_btn.helptext = _("Reset this settlement's displayed resources to the default configuration you have saved.")
+			reset_default_btn.helptext = T("Reset this settlement's displayed resources to the default configuration you have saved.")
 			reset_default_btn.capture(Callback(self._drop_settlement_resource_configuration))
 
 		else:
-			reset_default_btn.helptext = _("Reset the default configuration (which you see here) to the factory default for all settlements.")
+			reset_default_btn.helptext = T("Reset the default configuration (which you see here) to the factory default for all settlements.")
 			cb = Callback.ChainedCallbacks(
 			  self._drop_settlement_resource_configuration, # remove specific config
 			  Callback(self._make_configuration_default, reset=True) # remove global config
@@ -612,11 +612,11 @@ class ResourceOverviewBar(object):
 
 		# This list must correspond to `figures` in _update_stats
 		images = [
-			("content/gui/images/resbar_stats/expense.png",     _("Running costs")),
-			("content/gui/images/resbar_stats/income.png",      _("Taxes")),
-			("content/gui/images/resbar_stats/buy.png",         _("Buy expenses")),
-			("content/gui/images/resbar_stats/sell.png",        _("Sell income")),
-			("content/gui/images/resbar_stats/scales_icon.png", _("Balance")),
+			("content/gui/images/resbar_stats/expense.png",     T("Running costs")),
+			("content/gui/images/resbar_stats/income.png",      T("Taxes")),
+			("content/gui/images/resbar_stats/buy.png",         T("Buy expenses")),
+			("content/gui/images/resbar_stats/sell.png",        T("Sell income")),
+			("content/gui/images/resbar_stats/scales_icon.png", T("Balance")),
 		]
 
 		for num, (image, helptext) in enumerate(images):

@@ -20,20 +20,21 @@
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # ###################################################
 
-from horizons.util.python.callback import Callback
-from horizons.util.loaders.actionsetloader import ActionSetLoader
-from horizons.constants import SETTLER
 from horizons.command.uioptions import SetTaxSetting
-from horizons.gui.tabs import OverviewTab
-from horizons.gui.util import create_resource_icon, get_happiness_icon_and_helptext
-from horizons.i18n import _lazy
 from horizons.component.namedcomponent import NamedComponent
+from horizons.constants import SETTLER
+from horizons.gui.util import create_resource_icon, get_happiness_icon_and_helptext
+from horizons.i18n import gettext_lazy as LazyT
 from horizons.messaging import SettlerUpdate
+from horizons.util.loaders.actionsetloader import ActionSetLoader
+from horizons.util.python.callback import Callback
+
+from .overviewtab import OverviewTab
 
 
 class SettlerOverviewTab(OverviewTab):
 	widget = 'overview_settler.xml'
-	helptext = _lazy("Settler overview")
+	helptext = LazyT("Settler overview")
 
 	def init_widget(self):
 		super(SettlerOverviewTab, self).init_widget()
@@ -106,9 +107,9 @@ class SettlerOverviewTab(OverviewTab):
 
 def setup_tax_slider(slider, val_label, settlement, level):
 	"""Set up a slider to work as tax slider"""
-	slider.scale_start = SETTLER.TAX_SETTINGS_MIN
-	slider.scale_end = SETTLER.TAX_SETTINGS_MAX
-	slider.step_length = SETTLER.TAX_SETTINGS_STEP
+	step_count = int((SETTLER.TAX_SETTINGS_MAX - SETTLER.TAX_SETTINGS_MIN) / SETTLER.TAX_SETTINGS_STEP)
+	slider.steps = [SETTLER.TAX_SETTINGS_MIN + SETTLER.TAX_SETTINGS_STEP * i for i in
+			range(step_count)]
 	slider.value = settlement.tax_settings[level]
 	def on_slider_change():
 		val_label.text = unicode(slider.value)

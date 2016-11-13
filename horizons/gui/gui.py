@@ -27,20 +27,23 @@ from fife.extensions.pychan.widgets import Icon
 
 import horizons.globals
 import horizons.main
-from horizons.gui.keylisteners import MainListener
-from horizons.gui.widgets.pickbeltwidget import CreditsPickbeltWidget
-from horizons.util.startgameoptions import StartGameOptions
-from horizons.messaging import GuiAction, GuiHover, GuiCancelAction
 from horizons.component.ambientsoundcomponent import AmbientSoundComponent
-from horizons.gui.util import load_uh_widget
+from horizons.gui.keylisteners import MainListener
+from horizons.gui.modules import (
+	HelpDialog, LoadingScreen, MultiplayerMenu, SelectSavegameDialog, SettingsDialog, SingleplayerMenu)
 from horizons.gui.modules.editorstartmenu import EditorStartMenu
-from horizons.gui.modules import (HelpDialog, SingleplayerMenu, MultiplayerMenu,
-                                  SelectSavegameDialog, LoadingScreen, SettingsDialog)
+from horizons.gui.util import load_uh_widget
 from horizons.gui.widgets.fpsdisplay import FPSDisplay
-from horizons.gui.windows import WindowManager, Window
+from horizons.gui.widgets.pickbeltwidget import CreditsPickbeltWidget
+from horizons.gui.windows import Window, WindowManager
+from horizons.i18n import gettext as T
+from horizons.messaging import GuiAction, GuiCancelAction, GuiHover
+from horizons.util.startgameoptions import StartGameOptions
 
 
 class MainMenu(Window):
+	# normal and hover
+	CHANGE_BACKGROUND_LABEL_BACKGROUND_COLOR = [(0, 0, 0, 70), (0, 0, 0, 175)]
 
 	def __init__(self, gui, windows):
 		super(MainMenu, self).__init__(windows)
@@ -64,7 +67,13 @@ class MainMenu(Window):
 			'load_button': gui.load_game,
 			'load_label' : gui.load_game,
 			'changeBackground' : gui.rotate_background,
+			'changeBackground/mouseEntered' : self.mouse_entered_changebackground,
+			'changeBackground/mouseExited': self.mouse_exited_changebackground,
 		})
+
+		# non-default background color for this Label
+		w = self._gui.findChildByName('changeBackground')
+		w.background_color = self.CHANGE_BACKGROUND_LABEL_BACKGROUND_COLOR[0]
 
 	def show(self):
 		self._gui.show()
@@ -74,10 +83,17 @@ class MainMenu(Window):
 
 	def on_escape(self):
 		"""Shows the quit dialog. Closes the game unless the dialog is cancelled."""
-		message = _("Are you sure you want to quit Unknown Horizons?")
-		if self._windows.open_popup(_("Quit Game"), message, show_cancel_button=True):
+		message = T("Are you sure you want to quit Unknown Horizons?")
+		if self._windows.open_popup(T("Quit Game"), message, show_cancel_button=True):
 			horizons.main.quit()
 
+	def mouse_entered_changebackground(self):
+		w = self._gui.findChildByName('changeBackground')
+		w.background_color = self.CHANGE_BACKGROUND_LABEL_BACKGROUND_COLOR[1]
+
+	def mouse_exited_changebackground(self):
+		w = self._gui.findChildByName('changeBackground')
+		w.background_color = self.CHANGE_BACKGROUND_LABEL_BACKGROUND_COLOR[0]
 
 class Gui(object):
 	"""This class handles all the out of game menu, like the main and pause menu, etc.

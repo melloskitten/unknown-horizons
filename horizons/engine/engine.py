@@ -20,11 +20,13 @@
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # ###################################################
 
+from __future__ import print_function
+
 import locale
 import logging
 
 from fife import fife
-from fife.extensions import pychan, fifelog
+from fife.extensions import fifelog, pychan
 
 from horizons.constants import LANGUAGENAMES, PATHS, SETTINGS
 from horizons.engine.pychan_util import init_pychan
@@ -76,7 +78,7 @@ class Fife(object):
 		self.engine_settings.setGLUseNPOT(self._finalSetting['GLUseNPOT'])
 
 		# introduced in fife 0.4.0
-		if self.getVersion >= (0,4,0):
+		if self.getVersion() >= (0,4,0):
 			self.engine_settings.setGLUseMonochrome(self._finalSetting['GLUseMonochrome'])
 			self.engine_settings.setGLUseMipmapping(self._finalSetting['GLUseMipmapping'])
 			if self._finalSetting['GLTextureFiltering'] == 'None':
@@ -165,7 +167,7 @@ class Fife(object):
 			'pipette':   'content/gui/images/cursors/cursor_pipette.png',
 			'rename':    'content/gui/images/cursors/cursor_rename.png',
 		}
-		self.cursor_images = dict( (k, self.imagemanager.load(v)) for k, v in  cursor_images.iteritems() )
+		self.cursor_images = dict((k, self.imagemanager.load(v)) for k, v in  cursor_images.iteritems())
 		self.cursor.set(self.cursor_images['default'])
 
 		# Init pychan.
@@ -282,7 +284,7 @@ class Fife(object):
 			try:
 				self.engine.pump()
 			except fife.Exception as e:
-				print e.getMessage()
+				print(e.getMessage())
 				break
 			for f in self.pump:
 				f()

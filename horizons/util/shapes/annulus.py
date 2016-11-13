@@ -20,7 +20,10 @@
 # ###################################################
 
 from horizons.util.python.decorators import bind_all
-from horizons.util.shapes import Point, Shape
+
+from . import Shape
+from .point import Point
+
 
 class Annulus(Shape):
 	"""Class for the shape of an annulus
