@@ -322,7 +322,6 @@ class RES:
 	GRAPES           = 58
 	ALVEARIES        = 59
 	HONEYCOMBS       = 60
-<<<<<<< HEAD
 	GOLD_DEPOSIT     = GOLD # 61
 	GOLD_ORE         = GOLD # 62
 	GOLD_INGOTS      = GOLD # 63
@@ -360,7 +359,7 @@ class RES:
 
 	HYGIENE          = GOLD # 96
 	RECREATION       = GOLD # 97
-=======
+
 	GOLD_DEPOSIT     = 61
 	GOLD_ORE         = 62
 	GOLD_INGOTS      = 63
@@ -399,7 +398,6 @@ class RES:
 	SOCIETY          = 95
 	HYGIENE          = 96
 	RECREATION       = 97
->>>>>>> b955f67... Unleash content to the world
 	BLACKDEATH       = 98
 	FIRE             = 99
 
@@ -561,11 +559,7 @@ class TIER:
 
 	LOWEST = SAILORS
 	HIGHEST = ARISTOCRATS
-<<<<<<< HEAD
-	CURRENT_MAX = MERCHANTS
-=======
 	CURRENT_MAX = ARISTOCRATS
->>>>>>> b955f67... Unleash content to the world
 
 class SETTLER:
 	TAX_SETTINGS_MIN = 0.5
