@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2013 The Unknown Horizons Team
+# Copyright (C) 2008-2016 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -23,8 +23,8 @@ from horizons.gui.style import NOTHING
 from horizons.gui.util import load_uh_widget
 from horizons.gui.widgets.imagebutton import ImageButton, OkButton
 from horizons.gui.windows import Window
-from horizons.i18n import _lazy
 from horizons.util.python.callback import Callback
+
 
 class PickBeltWidget(object):
 	"""Base class for widget with sections behaving as pages"""
@@ -80,23 +80,12 @@ class PickBeltWidget(object):
 			belt.hide()
 
 
-class OptionsPickbeltWidget(PickBeltWidget):
-	"""Widget for Options dialog with pickbelt style pages"""
-	widget_xml = 'settings.xml'
-
-	sections = (('graphics_settings', _lazy('Graphics')),
-	            ('hotkeys_settings', _lazy('Hotkeys')),
-	            ('game_settings', _lazy('Game')))
-
-	def update_view(self, number=0):
-		super(OptionsPickbeltWidget, self).update_view(number=number)
-
-
 class CreditsPickbeltWidget(PickBeltWidget, Window):
 	"""Widget for credits dialog with pickbelt style pages"""
 	widget_xml = 'credits.xml'
 	sections = (
-		('credits_team', u'UH-Team'),
+		('credits_team_2016', u'UH-Team New'),
+		('credits_team_2015', u'UH-Team Old'),
 		('credits_patchers', u'Patchers'),
 		('credits_translators', u'Translators'),
 		('credits_packagers', u'Packagers'),

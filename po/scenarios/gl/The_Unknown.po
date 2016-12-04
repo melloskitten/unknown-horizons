@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: team@lists.unknown-horizons.org\n"
-"POT-Creation-Date: 2013-05-21 12:45+0200\n"
+"POT-Creation-Date: 2016-08-25 19:10+0200\n"
 "PO-Revision-Date: 2013-05-05 13:25+0000\n"
 "Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,14 +24,18 @@ msgstr "fácil"
 
 #. scenario description
 #, fuzzy
+#| msgid ""
+#| "You are the captain of a ship under the flag of England in 1740. You and "
+#| "your crew were on the way to a colony of England in the pacific ocean.\n"
+#| "Everything went fine until you came into a storm…"
 msgid ""
 "You are the captain of a ship under the flag of England in 1740. You and "
-"your crew were on the way to a colony of England in the pacific ocean.\n"
+"your crew were on the way to a colony of England in the Pacific Ocean.\n"
 "Everything went fine until you came into a storm…"
 msgstr ""
 "Es o capitán dun barco de bandeira inglesa. Corre o ano 1740. Xunto coa túa "
 "tripulación viaxas cara unha colonia inglesa do océano pacífico.\n"
-"Todo ía segundo o previsto ata que vos colleu unha tormenta…\n"
+"Todo ía segundo o previsto ata que vos colleu unha tormenta…"
 
 #. This is a logbook page heading. Space is VERY short, please only translate to strings that fit (roughly 30 characters max).
 msgid "20th November 1740"
@@ -71,7 +75,6 @@ msgid "22nd November 1740"
 msgstr "22 de novembro de 1740"
 
 #. This is the text body of a logbook page.
-#, fuzzy
 msgid ""
 "The port is built and a new hope arises. I am still worried about the next "
 "days… we are running out of food and lack basic building material."
@@ -129,9 +132,13 @@ msgstr ""
 "principal na que fornecerlle bens á xente."
 
 #. This is the text body of a logbook page.
+#, fuzzy
+#| msgid ""
+#| "Task:\n"
+#| "Build a main square and at least 10 tents."
 msgid ""
 "Task:\n"
-"Build a main square and at least 10 tents."
+"Build a Main Square and at least 10 Tents."
 msgstr ""
 "Obxectivo:\n"
 "Constrúe unha praza principal e polo menos 10 tendas."
@@ -151,7 +158,6 @@ msgstr ""
 "de estar cuberto."
 
 #. This is the text body of a logbook page.
-#, fuzzy
 msgid ""
 "I have been researching the stars at night, but without my sea charts and "
 "instruments their meaning remains unknown. I have the feeling we will be "

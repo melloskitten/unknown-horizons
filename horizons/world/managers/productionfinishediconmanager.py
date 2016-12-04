@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2013 The Unknown Horizons Team
+# Copyright (C) 2008-2016 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 
@@ -19,15 +19,18 @@
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # ###################################################
 
+import uuid
+
 from fife import fife
-from horizons.component.storagecomponent import StorageComponent
-from horizons.constants import GAME_SPEED
 
 import horizons.globals
+from horizons.component.storagecomponent import StorageComponent
+from horizons.constants import GAME_SPEED
 from horizons.gui.util import get_res_icon_path
 from horizons.messaging import ResourceProduced, SettingChanged
 from horizons.scheduler import Scheduler
 from horizons.util.python.callback import Callback
+
 
 class ProductionFinishedIconManager(object):
 	"""Manager class that manages all production finished icons. It listens to
@@ -123,13 +126,10 @@ class ProductionFinishedIconManager(object):
 		rel = fife.Point(-14, -50 - self.run[group])
 		self.run[group] += self.animation_steps
 
+		x = pos.origin.x + (pos.width / 4.0)
+		y = pos.origin.y + (pos.height / 4.0)
 		loc = fife.Location(self.layer)
-		loc.setExactLayerCoordinates(
-		  fife.ExactModelCoordinate(
-		    pos.origin.x + float(pos.width) / 4,
-		    pos.origin.y + float(pos.height) / 4,
-		  )
-		)
+		loc.setExactLayerCoordinates(fife.ExactModelCoordinate(x, y))
 
 		bg_node = fife.RendererNode(loc, bg_rel)
 		node = fife.RendererNode(loc, rel)
@@ -153,5 +153,4 @@ class ProductionFinishedIconManager(object):
 		"""Returns the render name for resource icons of this instance
 		This key MUST be unique!
 		"""
-		return "produced_resource_" + str(res) + "_" + str(instance.position.origin)\
-		       + "_" + str(Scheduler().cur_tick)
+		return "produced_resource_" + str(res) + "_" + str(uuid.uuid4())

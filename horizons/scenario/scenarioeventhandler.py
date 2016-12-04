@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2013 The Unknown Horizons Team
+# Copyright (C) 2008-2016 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -19,16 +19,19 @@
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # ###################################################
 
-import json
-import yaml
 import copy
+import json
 
+import yaml
+
+from horizons.i18n import gettext as T
 from horizons.scheduler import Scheduler
 from horizons.util.living import LivingObject
 from horizons.util.python.callback import Callback
 from horizons.util.yamlcache import YamlCache
 
-from horizons.scenario import ACTIONS, CONDITIONS
+from .actions import ACTIONS
+from .conditions import CONDITIONS
 
 
 class InvalidScenarioFileFormat(Exception):
@@ -36,6 +39,7 @@ class InvalidScenarioFileFormat(Exception):
 		if msg is None:
 			msg = "Invalid scenario file."
 		super(InvalidScenarioFileFormat, self).__init__(msg)
+
 
 class ScenarioEventHandler(LivingObject):
 	"""Handles event, that make up a scenario. See wiki.
@@ -166,7 +170,7 @@ class ScenarioEventHandler(LivingObject):
 
 		@throws InvalidScenarioFileFormat on yaml parse error
 		"""
-		fallback = _('unknown')
+		fallback = T('unknown')
 		metadata = cls._parse_yaml_file(filename).get('metadata', {})
 		for required_key in ('author', 'difficulty', 'description'):
 			metadata.setdefault(required_key, fallback)
@@ -221,7 +225,8 @@ class ScenarioEventHandler(LivingObject):
 		data = copy.deepcopy(self._data)
 		del data['events']
 		yaml_code = dump_dict_to_yaml(data)
-		yaml_code = yaml_code.rstrip(u'}\n') # remove last } so we can add stuff
+		# remove last } so we can add stuff
+		yaml_code = yaml_code.rsplit(u'}\n', 1)[0]
 		yaml_code += ', events: [ %s ] }' % ', '.join(event.to_yaml() for event in self._events)
 		return yaml_code
 
@@ -325,4 +330,3 @@ def dump_dict_to_yaml(data):
 
 	# default_flow_style: makes use of short list notation without newlines (required here)
 	return yaml.safe_dump(data, line_break='\n', default_flow_style=True)
-
