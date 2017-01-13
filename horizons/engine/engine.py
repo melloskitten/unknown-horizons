@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -241,7 +241,7 @@ class Fife(CEGUIApplicationBase):
 	def replace_key_for_action(self, action, oldkey, newkey):
 		"""Replaces key *oldkey* with key *newkey* for action *action*"""
 		old_keys = self._setting.get(SETTINGS.KEY_MODULE, action, [])
-		if not oldkey in old_keys:
+		if oldkey not in old_keys:
 			return
 		index = old_keys.index(oldkey)
 		old_keys[index] = newkey

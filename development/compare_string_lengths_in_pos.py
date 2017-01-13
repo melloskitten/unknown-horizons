@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -43,7 +43,7 @@ for line in file:
 	line = line.strip()
 
 	if state == 0:
-		if not "msgid" in line:
+		if "msgid" not in line:
 			continue
 		translations[i] = {}
 		translations[i][0] = line

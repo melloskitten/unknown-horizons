@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -97,7 +97,7 @@ class TabWidget(object):
 		"""Used as callback function for the TabButtons.
 		@param number: tab number that is to be shown.
 		"""
-		if not number in range(len(self._tabs)):
+		if number >= len(self._tabs):
 			# this usually indicates a non-critical error, therefore we can handle it without crashing
 			traceback.print_stack()
 			self.log.warning("Invalid tab number %s, available tabs: %s", number, self._tabs)

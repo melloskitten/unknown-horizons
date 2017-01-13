@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -22,6 +22,7 @@
 import logging
 import os
 
+from fife import fife
 from fife.extensions.pychan import loadXML
 from fife.extensions.pychan.widgets import Container, HBox, Icon
 
@@ -125,7 +126,7 @@ def get_res_icon_path(res, size=32, greyscale=False, full_path=True):
 
 	try:
 		Icon(image=icon_path)
-	except RuntimeError: # ImageManager: image not found, use placeholder or die
+	except fife.NotFound: # ImageManager: image not found, use placeholder or die
 		if res == 'placeholder':
 			raise Exception('Image not found: {icon_path}'.format(icon_path=icon_path))
 		else:
