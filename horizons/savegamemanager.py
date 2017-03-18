@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -204,10 +204,10 @@ class SavegameManager(object):
 				os.unlink(filename)
 
 		if autosaves:
-			tmp_del("%s/*.%s" % (cls.autosave_dir, cls.savegame_extension),
+			tmp_del("{}/*.{}".format(cls.autosave_dir, cls.savegame_extension),
 			        horizons.globals.fife.get_uh_setting("AutosaveMaxCount"))
 		if quicksaves:
-			tmp_del("%s/*.%s" % (cls.quicksave_dir, cls.savegame_extension),
+			tmp_del("{}/*.{}".format(cls.quicksave_dir, cls.savegame_extension),
 			        horizons.globals.fife.get_uh_setting("QuicksaveMaxCount"))
 
 	@classmethod
@@ -399,8 +399,7 @@ class SavegameManager(object):
 	@classmethod
 	def get_savegamename_from_filename(cls, savegamefile):
 		"""Returns a displayable name, extracted from a filename"""
-		name = os.path.basename(savegamefile)
-		name = name.rsplit(".%s"%cls.savegame_extension, 1)[0]
+		name = os.path.splitext(os.path.basename(savegamefile))[0]
 		cls.log.debug("Savegamemanager: savegamename: %s", name)
 		return name
 

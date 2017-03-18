@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -120,7 +120,7 @@ class GenericStorage(ChangeListener):
 		return self._storage.iteritems()
 
 	def __str__(self):
-		return "%s(%s)" % (self.__class__, self._storage if hasattr(self, "_storage") else None)
+		return "{}({})".format(self.__class__, self._storage if hasattr(self, "_storage") else None)
 
 class SpecializedStorage(GenericStorage):
 	"""Storage where only certain resources can be stored. If you want to store a resource here,
@@ -262,7 +262,7 @@ class PositiveTotalNumSlotsStorage(PositiveStorage, TotalStorage):
 	def alter(self, res, amount):
 		if amount == 0:
 			return 0
-		if not res in self._storage and len(self._storage) >= self.slotnum:
+		if res not in self._storage and len(self._storage) >= self.slotnum:
 			return amount
 		ret = super(PositiveTotalNumSlotsStorage, self).alter(res, amount)
 		if self[res] == 0:
@@ -271,7 +271,7 @@ class PositiveTotalNumSlotsStorage(PositiveStorage, TotalStorage):
 		return ret
 
 	def get_free_space_for(self, res):
-		if not res in self._storage and len(self._storage) >= self.slotnum:
+		if res not in self._storage and len(self._storage) >= self.slotnum:
 			return 0
 		else:
 			return super(PositiveTotalNumSlotsStorage, self).get_free_space_for(res)
@@ -304,13 +304,13 @@ class PositiveSizedNumSlotStorage(PositiveSizedSlotStorage):
 	def alter(self, res, amount):
 		if amount == 0:
 			return 0
-		if not res in self._storage and len(self._storage) >= self.slotnum:
+		if res not in self._storage and len(self._storage) >= self.slotnum:
 			return amount
 		result = super(PositiveSizedNumSlotStorage, self).alter(res, amount)
 		return result
 
 	def get_free_space_for(self, res):
-		if not res in self._storage and len(self._storage) >= self.slotnum:
+		if res not in self._storage and len(self._storage) >= self.slotnum:
 			return 0
 		else:
 			return super(PositiveSizedNumSlotStorage, self).get_free_space_for(res)

@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -283,7 +283,7 @@ class Producer(Component):
 		# call super() after removing all productions since it removes the instance (make it invalid)
 		# which can be needed by changelisteners' actions (e.g. in remove_production method)
 		super(Producer, self).remove()
-		assert not self.get_productions(), 'Failed to remove %s ' % self.get_productions()
+		assert not self.get_productions(), 'Failed to remove {} '.format(self.get_productions())
 
 
 	# PROTECTED METHODS

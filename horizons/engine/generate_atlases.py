@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -341,7 +341,10 @@ class AtlasGenerator(object):
 
 	def _save_metadata(self):
 		self.log.info('Saving metadata')
-		with open(PATHS.ATLAS_METADATA_PATH, 'wb') as file:
+		path = PATHS.ATLAS_METADATA_PATH
+		if not os.path.exists(os.path.dirname(path)):
+			os.makedirs(os.path.dirname(path))
+		with open(path, 'wb') as file:
 			pickle.dump(self, file)
 		self.log.info('Finished saving metadata')
 

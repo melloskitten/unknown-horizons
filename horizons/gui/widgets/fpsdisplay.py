@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -19,15 +19,14 @@
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # ###################################################
 
-from fife.extensions.pychan.widgets import Label
+from fife.extensions.pychan.widgets import ABox, Label
 
 import horizons.globals
 from horizons.engine import Fife
 from horizons.extscheduler import ExtScheduler
-from horizons.gui.widgets.container import AutoResizeContainer
 
 
-class FPSDisplay(AutoResizeContainer):
+class FPSDisplay(ABox):
 	"""Display the frames per second.
 
 	Updates once a second if visible.

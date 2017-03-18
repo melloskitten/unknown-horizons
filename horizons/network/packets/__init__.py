@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -164,7 +164,7 @@ def unserialize(data, validate=False, protocol=0):
 		if not inspect.isfunction(mypacket.validate):
 			raise NetworkException("Attempt to override packet.validate()")
 		if mypacket.__class__.maxpacketsize > 0 and len(data) > mypacket.__class__.maxpacketsize:
-			raise PacketTooLarge("packet=%s, length=%d)" % (mypacket.__class__.__name__, len(data)))
+			raise PacketTooLarge("packet={}, length={:d})".format(mypacket.__class__.__name__, len(data)))
 		mypacket.__class__.validate(mypacket, protocol)
 	return mypacket
 

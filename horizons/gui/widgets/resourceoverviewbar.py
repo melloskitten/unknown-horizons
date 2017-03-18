@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -628,7 +628,7 @@ class ResourceOverviewBar(object):
 			box.helptext = helptext
 			#TODO Fix icon size; looks like not 16x16 a surprising amount of times.
 			box.addChild(Icon(image=image))
-			box.addSpacer(Spacer())
+			box.addChild(Spacer())
 			box.addChild(Label(name="resbar_stats_entry_%s"%num))
 			#TODO This label is a workaround for some fife font bug,
 			# probably http://github.com/fifengine/fifengine/issues/666.

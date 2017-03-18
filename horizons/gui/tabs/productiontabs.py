@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -23,7 +23,7 @@
 import operator
 import weakref
 
-from fife.extensions.pychan.widgets import Icon, Label
+from fife.extensions.pychan.widgets import ABox, Icon, Label
 
 from horizons.command.building import Tear
 from horizons.command.production import ToggleActive
@@ -31,7 +31,6 @@ from horizons.component.fieldbuilder import FieldBuilder
 from horizons.component.storagecomponent import StorageComponent
 from horizons.constants import GAME_SPEED, PRODUCTION
 from horizons.gui.util import load_uh_widget
-from horizons.gui.widgets.container import AutoResizeContainer
 from horizons.gui.widgets.imagebutton import ImageButton
 from horizons.gui.widgets.imagefillstatusbutton import ImageFillStatusButton
 from horizons.i18n import gettext as T, gettext_lazy as LazyT
@@ -103,11 +102,11 @@ class ProductionOverviewTab(OverviewTab):
 			self._set_resource_amounts(container, production)
 
 			if production.is_paused():
-				centered_container.removeChild( centered_container.findChild(name="toggle_active_active") )
+				centered_container.removeChild(centered_container.findChild(name="toggle_active_active"))
 				toggle_icon = centered_container.findChild(name="toggle_active_inactive")
 				toggle_icon.name = "toggle_active"
 			else:
-				centered_container.removeChild( centered_container.findChild(name="toggle_active_inactive") )
+				centered_container.removeChild(centered_container.findChild(name="toggle_active_inactive"))
 				toggle_icon = centered_container.findChild(name="toggle_active_active")
 				toggle_icon.name = "toggle_active"
 
@@ -120,7 +119,7 @@ class ProductionOverviewTab(OverviewTab):
 					anim = PychanAnimation(toggle_icon, self.__class__.ACTIVE_PRODUCTION_ANIM_DIR)
 					centered_container.anim = anim
 					anim.start(1.0/12, -1) # always start anew, people won't notice
-					self._animations.append( weakref.ref( anim ) )
+					self._animations.append(weakref.ref(anim))
 
 			# fill it with input and output resources
 			in_res_container = container.findChild(name="input_res")
@@ -275,7 +274,7 @@ class LumberjackOverviewTab(ProductionOverviewTab):
 	"""
 	def init_widget(self):
 		super(LumberjackOverviewTab, self).init_widget()
-		container = AutoResizeContainer(position=(20, 210))
+		container = ABox(position=(20, 210))
 		icon = Icon(name='build_all_bg')
 		button = ImageButton(name='build_all_button')
 		container.addChild(icon)

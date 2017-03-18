@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -47,7 +47,7 @@ class Circle(Shape):
 		return rect.distance(self.center) > self.radius
 
 	def __str__(self):
-		return "Circle(center=%s,radius=%s)" % (self.center, self.radius)
+		return "Circle(center={},radius={})".format(self.center, self.radius)
 
 	def __eq__(self, other):
 		try:

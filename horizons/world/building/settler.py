@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -406,8 +406,9 @@ class Settler(BuildableRect, BuildingResourceHandler, BasicBuilding):
 
 	def __str__(self):
 		try:
-			return "%s(l:%s;ihab:%s;hap:%s)" % (super(Settler, self).__str__(), self.level,
-			                                    self.inhabitants, self.happiness)
+			return "{}(l:{};ihab:{};hap:{})".format(
+				super(Settler, self).__str__(), self.level,
+			    self.inhabitants, self.happiness)
 		except AttributeError: # an attribute hasn't been set up
 			return super(Settler, self).__str__()
 

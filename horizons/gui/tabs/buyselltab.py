@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -175,9 +175,9 @@ class BuySellTab(TabInterface):
 			self.resources.hide()
 			self.show()
 			if resource_id != 0: # new res
-				self._set_hint( T("Set to buy or sell by clicking on that label, then adjust the amount via the slider to the right.") )
+				self._set_hint(T("Set to buy or sell by clicking on that label, then adjust the amount via the slider to the right."))
 			else:
-				self._set_hint( u"" )
+				self._set_hint(u"")
 			keep_hint = True
 		slot = self.slot_widgets[slot_id]
 		slider = slot.findChild(name="slider")

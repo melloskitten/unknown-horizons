@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -231,7 +231,7 @@ def gui_test(use_dev_map=False, use_fixture=None, ai_players=0, timeout=15 * 60,
 	def deco(func):
 		@wraps(func)
 		def wrapped():
-			test_name = '%s.%s' % (func.__module__, func.__name__)
+			test_name = '{}.{}'.format(func.__module__, func.__name__)
 
 			# when running under coverage, enable it for subprocesses too
 			if os.environ.get('RUNCOV'):
@@ -243,7 +243,7 @@ def gui_test(use_dev_map=False, use_fixture=None, ai_players=0, timeout=15 * 60,
 			if use_fixture:
 				path = os.path.join(TEST_FIXTURES_DIR, use_fixture + '.sqlite')
 				if not os.path.exists(path):
-					raise Exception('Savegame %s not found' % path)
+					raise Exception('Savegame {} not found'.format(path))
 				args.extend(['--load-game', path])
 			elif use_dev_map:
 				args.append('--start-dev-map')
@@ -286,7 +286,7 @@ def gui_test(use_dev_map=False, use_fixture=None, ai_players=0, timeout=15 * 60,
 
 			def handler(signum, frame):
 				proc.kill()
-				raise TestFailed('\n\nTest run exceeded %ds time limit' % timeout)
+				raise TestFailed('\n\nTest run exceeded {:d}s time limit'.format(timeout))
 
 			timelimit = Timer(handler)
 			timelimit.start(timeout)
@@ -299,7 +299,7 @@ def gui_test(use_dev_map=False, use_fixture=None, ai_players=0, timeout=15 * 60,
 				if nose_captured:
 					if stdout:
 						print(stdout)
-					if not 'Traceback' in stderr:
+					if 'Traceback' not in stderr:
 						stderr += '\nNo usable error output received, possibly a segfault.'
 					raise TestFailed('\n\n' + stderr.decode('ascii', 'ignore'))
 				else:

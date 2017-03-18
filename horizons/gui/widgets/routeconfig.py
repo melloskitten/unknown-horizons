@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -68,6 +68,10 @@ class RouteConfig(Window):
 
 	@property
 	def session(self):
+		"""
+		@rtype session: horizons.session.Session
+		@return: session
+		"""
 		session = self.instance.session
 		assert isinstance(session, horizons.session.Session)
 		return session

@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -131,7 +131,7 @@ class BarracksConfirmTab(ProducerOverviewTabBase):
 
 	def init_widget(self):
 		super(BarracksConfirmTab, self).init_widget()
-		events = { 'create_unit': self.start_production }
+		events = {'create_unit': self.start_production}
 		self.widget.mapEvents(events)
 
 	def start_production(self):

@@ -1,6 +1,6 @@
 # Encoding: utf-8
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -236,7 +236,7 @@ class RandomMapWidget(object):
 		)
 
 		for param, __, setting_name in parameters:
-			self._map_parameters[param] = horizons.globals.fife.get_uh_setting(setting_name)
+			self._map_parameters[param] = int(horizons.globals.fife.get_uh_setting(setting_name))
 
 		def make_on_change(param, text, setting_name):
 			# When a slider is changed, update the value displayed in the label, save the value
@@ -246,8 +246,8 @@ class RandomMapWidget(object):
 				self._gui.findChild(name=param + '_lbl').text = text + u' ' + unicode(int(slider.value))
 				horizons.globals.fife.set_uh_setting(setting_name, slider.value)
 				horizons.globals.fife.save_settings()
-				self._on_random_parameter_changed()
 				self._map_parameters[param] = int(slider.value)
+				self._on_random_parameter_changed()
 			return on_change
 
 		for param, text, setting_name in parameters:

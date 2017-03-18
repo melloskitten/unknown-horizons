@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -22,6 +22,7 @@
 import math
 from operator import itemgetter
 
+from fife import fife
 from fife.extensions.pychan.widgets import Container, HBox, Icon, Label
 
 from horizons.command.production import AddProduction, CancelCurrentProduction, RemoveFromQueue
@@ -83,7 +84,7 @@ class UnitbuilderTabBase(ProducerOverviewTabBase):
 		if (Fife.getVersion() >= (0, 4, 0)):
 			container_inactive.parent.hideChild(container_inactive)
 		else:
-			if not container_inactive in container_inactive.parent.hidden_children:
+			if container_inactive not in container_inactive.parent.hidden_children:
 				container_inactive.parent.hideChild(container_inactive)
 
 		self.update_production_is_active_container(progress_container, container_active, cancel_container, production_lines)
@@ -116,7 +117,7 @@ class UnitbuilderTabBase(ProducerOverviewTabBase):
 			if (Fife.getVersion() >= (0, 4, 0)):
 				w.parent.hideChild(w)
 			else:
-				if not w in w.parent.hidden_children:
+				if w not in w.parent.hidden_children:
 					w.parent.hideChild(w)
 
 	def update_buttons(self, container_active, cancel_container):
@@ -130,7 +131,7 @@ class UnitbuilderTabBase(ProducerOverviewTabBase):
 		if (Fife.getVersion() >= (0, 4, 0)):
 			button_active.parent.hideChild(button_active)
 		else:
-			if not button_active in button_active.parent.hidden_children:
+			if button_active not in button_active.parent.hidden_children:
 				button_active.parent.hideChild(button_active)
 		button_inactive.parent.showChild(button_inactive)
 
@@ -163,14 +164,10 @@ class UnitbuilderTabBase(ProducerOverviewTabBase):
 
 			try:
 				icon = Icon(name=icon_name, image=image, helptext=helptext)
-			except RuntimeError,e:
+			except fife.NotFound as e:
 				# It's possible that this error was raised from a missing thumbnail asset,
 				# so we check against that now and use a fallback thumbnail instead
-
-				# TODO string matching for runtime errors is nightmare fuel
-				# Better: Replace RuntimeError in fife with a more precise error class if possible
-				# and only catch that class here
-				if e.message.startswith('_[NotFound]_ , Something was searched, but not found :: content/gui/icons/thumbnails/'):
+				if 'content/gui/icons/thumbnails/' in e.what():
 					# actually load the fallback unit image
 					image = self.__class__.UNIT_THUMBNAIL.format(type_id="unknown_unit")
 					icon = Icon(name=icon_name, image=image, helptext=helptext)
@@ -180,7 +177,7 @@ class UnitbuilderTabBase(ProducerOverviewTabBase):
 			rm_from_queue_cb = Callback(RemoveFromQueue(self.producer, place_in_queue).execute,
 		                                self.instance.session)
 			icon.capture(rm_from_queue_cb, event_name="mouseClicked")
-			queue_container.addChild( icon )
+			queue_container.addChild(icon)
 
 	def update_needed_resources(self, needed_res_container):
 		""" Update needed resources """
@@ -346,7 +343,7 @@ class BoatbuilderConfirmTab(ProducerOverviewTabBase):
 
 	def init_widget(self):
 		super(BoatbuilderConfirmTab, self).init_widget()
-		events = { 'create_unit': self.start_production }
+		events = {'create_unit': self.start_production}
 		self.widget.mapEvents(events)
 
 	def start_production(self):

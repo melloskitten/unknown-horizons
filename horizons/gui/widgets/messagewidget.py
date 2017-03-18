@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -147,7 +147,7 @@ class MessageWidget(LivingObject):
 			AmbientSoundComponent.play_special('message')
 
 		if message.x is not None and message.y is not None:
-			self.session.ingame_gui.minimap.highlight( (message.x, message.y) )
+			self.session.ingame_gui.minimap.highlight((message.x, message.y))
 
 		self.draw_widget()
 		self.show_text(0)

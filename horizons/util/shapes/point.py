@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -56,7 +56,7 @@ class Point(Shape):
 
 	def __str__(self):
 		""" nice representation for debugging purposes """
-		return 'Point(%s, %s)' % (self.x, self.y)
+		return 'Point({}, {})'.format(self.x, self.y)
 
 	def __eq__(self, other):
 		if other is None:

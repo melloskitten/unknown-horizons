@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -56,7 +56,11 @@ from horizons.world.managers.statusiconmanager import StatusIconManager
 
 class IngameGui(LivingObject):
 	"""Class handling all the ingame gui events.
-	Assumes that only 1 instance is used (class variables)"""
+	Assumes that only 1 instance is used (class variables)
+
+	@type session: horizons.session.Session
+	@param session: instance of session the world belongs to.
+	"""
 
 	message_widget = livingProperty()
 	minimap = livingProperty()
@@ -255,10 +259,10 @@ class IngameGui(LivingObject):
 		self.set_cursor() # set default cursor for build menu
 		self.deselect_all()
 
-		if not any( settlement.owner.is_local_player for settlement in self.session.world.settlements):
+		if not any(settlement.owner.is_local_player for settlement in self.session.world.settlements):
 			# player has not built any settlements yet. Accessing the build menu at such a point
 			# indicates a mistake in the mental model of the user. Display a hint.
-			tab = TabWidget(self, tabs=[ TabInterface(widget="buildtab_no_settlement.xml") ])
+			tab = TabWidget(self, tabs=[TabInterface(widget="buildtab_no_settlement.xml")])
 		else:
 			btabs = BuildTab.create_tabs(self.session, self._build)
 			tab = TabWidget(self, tabs=btabs, name="build_menu_tab_widget",
@@ -297,13 +301,13 @@ class IngameGui(LivingObject):
 		"""
 		if self._old_menu is not None:
 			if hasattr(self._old_menu, "remove_remove_listener"):
-				self._old_menu.remove_remove_listener( Callback(self.show_menu, None) )
+				self._old_menu.remove_remove_listener(Callback(self.show_menu, None))
 			self._old_menu.hide()
 
 		self._old_menu = menu
 		if self._old_menu is not None:
 			if hasattr(self._old_menu, "add_remove_listener"):
-				self._old_menu.add_remove_listener( Callback(self.show_menu, None) )
+				self._old_menu.add_remove_listener(Callback(self.show_menu, None))
 			self._old_menu.show()
 			self.minimap_to_front()
 
@@ -462,7 +466,7 @@ class IngameGui(LivingObject):
 
 		if action == _Actions.GRID:
 			gridrenderer = self.session.view.renderer['GridRenderer']
-			gridrenderer.setEnabled( not gridrenderer.isEnabled() )
+			gridrenderer.setEnabled(not gridrenderer.isEnabled())
 		elif action == _Actions.COORD_TOOLTIP:
 			self.coordinates_tooltip.toggle()
 		elif action == _Actions.DESTROY_TOOL:
@@ -533,7 +537,7 @@ class IngameGui(LivingObject):
 			if self.session.selected_instances:
 				# Scroll to first one, we can never guarantee to display all selected units.
 				instance = iter(self.session.selected_instances).next()
-				self.session.view.center( * instance.position.center.to_tuple())
+				self.session.view.center(* instance.position.center.to_tuple())
 				for instance in self.session.selected_instances:
 					if hasattr(instance, "path") and instance.owner.is_local_player:
 						self.minimap.show_unit_path(instance)

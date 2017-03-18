@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -242,7 +242,7 @@ class Rect(Shape):
 			yield (self.right + 1, self.bottom + 1)
 
 	def __str__(self):
-		return "Rect(o:(%s,%s),w:%s,h:%s)" % (self.left, self.top, self.width, self.height)
+		return "Rect(o:({},{}),w:{},h:{})".format(self.left, self.top, self.width, self.height)
 
 	def __eq__(self, other):
 		if not isinstance(other, Rect):

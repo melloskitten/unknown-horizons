@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -278,7 +278,7 @@ class PasswordInput(Popup):
 
 	def prepare(self, **kwargs):
 		super(PasswordInput, self).prepare(**kwargs)
-		pw = TextField(name='password', max_size=(320, 20), min_size=(320, 20))
+		pw = TextField(name='password', fixed_size=(320, 20))
 		box = self._gui.findChild(name='message_box')
 		box.addChild(pw)
 

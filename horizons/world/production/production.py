@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -212,7 +212,7 @@ class Production(ChangeListener):
 				Scheduler().add_new_object(self._get_producing_callback(), self,
 				                           self._pause_remaining_ticks)
 			else:
-				assert False, 'Unhandled production state: %s' % self._pause_old_state
+				assert False, 'Unhandled production state: {}'.format(self._pause_old_state)
 		else: # do pause
 			# switch state
 			self._pause_old_state = self._state
@@ -228,7 +228,7 @@ class Production(ChangeListener):
 						Scheduler().get_remaining_ticks(self, self._get_producing_callback())
 				Scheduler().rem_call(self, self._get_producing_callback())
 			else:
-				assert False, 'Unhandled production state: %s' % self._pause_old_state
+				assert False, 'Unhandled production state: {}'.format(self._pause_old_state)
 
 		self._changed()
 
@@ -369,7 +369,8 @@ class Production(ChangeListener):
 	def _produce(self):
 		"""Called when there are enough res in the inventory for starting production"""
 		self.log.debug("%s _produce", self)
-		assert self._check_available_res() and self._check_for_space_for_produced_res()
+		assert self._check_available_res()
+		assert self._check_for_space_for_produced_res()
 		# take the res we need
 		self._remove_res_to_expend()
 		# call finished in some time
@@ -432,7 +433,7 @@ class Production(ChangeListener):
 
 	def __str__(self): # debug
 		if hasattr(self, "_state"):
-			return 'Production(state=%s;prodline=%s)' % (self._state, self._prod_line)
+			return 'Production(state={};prodline={})'.format(self._state, self._prod_line)
 		else:
 			return "UninitializedProduction()"
 

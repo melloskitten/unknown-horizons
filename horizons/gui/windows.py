@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -412,7 +412,7 @@ class WindowManager(object):
 		if details:
 			msg += T("Details: {error_details}").format(error_details=details)
 		try:
-			self.open_popup( T("Error: {error_message}").format(error_message=windowtitle),
+			self.open_popup(T("Error: {error_message}").format(error_message=windowtitle),
 			                 msg)
 		except SystemExit: # user really wants us to die
 			raise

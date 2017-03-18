@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -87,5 +87,5 @@ class FightingShip(MovingWeaponHolder, Ship):
 
 		facing_location.setMapCoordinates(facing_coords)
 		self._instance.setFacingLocation(facing_location)
-		self.act('fire_%s' % direction, facing_location, repeating=False)
+		self.act('fire_{}'.format(direction), facing_location, repeating=False)
 		self._action = 'idle'

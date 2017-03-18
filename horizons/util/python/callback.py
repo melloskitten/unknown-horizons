@@ -1,5 +1,5 @@
 # ###################################################
-# Copyright (C) 2008-2016 The Unknown Horizons Team
+# Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
 # This file is part of Unknown Horizons.
 #
@@ -26,7 +26,7 @@ class Callback(object):
 	more flexibility; e.g. you can compare callbacks, which can't be done with lambda functions.
 	"""
 	def __init__(self, callback_function, *args, **kwargs):
-		assert callable(callback_function), "Argument to for callback_f is %s" % callback_function
+		assert callable(callback_function), "Argument to for callback_f is {}".format(callback_function)
 		self.callback = callback_function
 		self.args = args
 		self.kwargs = kwargs
@@ -65,4 +65,4 @@ class Callback(object):
 		             tuple(self.kwargs.iteritems()))) # to tuple, dict is unhashable
 
 	def __str__(self):
-		return 'Callback(%s, %s, %s)' % (self.callback, self.args, self.kwargs)
+		return 'Callback({}, {}, {})'.format(self.callback, self.args, self.kwargs)
