@@ -21,7 +21,9 @@
 
 import platform
 import socket
-import urllib.request, urllib.parse, urllib.error
+import urllib.error
+import urllib.parse
+import urllib.request
 import webbrowser
 
 from fife.extensions.pychan.widgets import Button
@@ -31,12 +33,12 @@ from horizons.gui.windows import Popup
 from horizons.i18n import gettext as T
 
 
-class UpdateInfo(object):
+class UpdateInfo:
 	INVALID, READY, UNINITIALIZED = list(range(3))
 	def __init__(self):
 		self.status = UpdateInfo.UNINITIALIZED
-		self.version = None
-		self.link = None
+		self.version = None # type: str
+		self.link = None # type: str
 
 TIMEOUT = 5.0 # we should be done before the user can start a game
 def check_for_updates(info):

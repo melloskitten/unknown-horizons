@@ -20,8 +20,7 @@
 # ###################################################
 
 from collections import defaultdict
-
-from typing import Tuple
+from typing import Dict, List, Tuple
 
 from horizons.ai.aiplayer.basicbuilder import BasicBuilder
 from horizons.ai.aiplayer.building import AbstractBuilding
@@ -31,7 +30,7 @@ from horizons.constants import BUILDINGS, RES
 from horizons.world.buildability.terraincache import TerrainRequirement
 
 
-class FarmOptionCache(object):
+class FarmOptionCache:
 	def __init__(self, settlement_manager):
 		self.settlement_manager = settlement_manager
 		abstract_farm =  AbstractBuilding.buildings[BUILDINGS.FARM]

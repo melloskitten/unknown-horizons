@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ###################################################
 # Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
@@ -35,7 +34,7 @@ from horizons.util.loaders.sqliteanimationloader import SQLiteAnimationLoader
 from horizons.util.loaders.sqliteatlasloader import SQLiteAtlasLoader
 
 
-class Fife(object):
+class Fife:
 	"""
 	Basic initiation of engine. Followed later by init().
 	"""
@@ -167,7 +166,7 @@ class Fife(object):
 			'pipette':   'content/gui/images/cursors/cursor_pipette.png',
 			'rename':    'content/gui/images/cursors/cursor_rename.png',
 		}
-		self.cursor_images = dict((k, self.imagemanager.load(v)) for k, v in  cursor_images.items())
+		self.cursor_images = {k: self.imagemanager.load(v) for k, v in  cursor_images.items()}
 		self.cursor.set(self.cursor_images['default'])
 
 		# Init pychan.

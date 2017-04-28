@@ -1,4 +1,3 @@
-# -.- coding: utf-8 -.-
 # ###################################################
 # Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
@@ -25,8 +24,8 @@ import os
 import os.path
 import platform
 import subprocess
-
-from typing import Optional
+from pathlib import Path
+from typing import List, Optional
 
 from horizons.ext.enum import Enum
 
@@ -63,21 +62,25 @@ def get_git_version():
 
 	# Read current HEAD out of .git manually
 	try:
-		git_head_path = os.path.join(uh_path, '.git', 'HEAD')
-		if os.path.exists(git_head_path):
-			head = open(git_head_path).readline().strip().partition(' ')
+		git_head_path = Path(uh_path, '.git', 'HEAD')
+		if git_head_path.exists():
+			with git_head_path.open() as f:
+				head = f.readline().strip().partition(' ')
 			if head[2]:
-				head_file = os.path.join(uh_path, '.git', head[2])
+				head_file = Path(uh_path, '.git', head[2])
 			else:
 				head_file = git_head_path
-			if os.path.exists(head_file):
-				return str(open(head_file).readline().strip()[0:7])
+
+			if head_file.exists():
+				with head_file.open() as f:
+					return str(f.readline().strip()[0:7])
 	except ImportError:
 		pass
 
 	# Try gitversion.txt
 	try:
-		return str(open(os.path.join("content", "packages", "gitversion.txt")).read())
+		with open(os.path.join("content", "packages", "gitversion.txt")) as f:
+			return f.read()
 	except IOError:
 		pass
 
@@ -202,7 +205,7 @@ class BUILDINGS:
 	WINERY           = 65
 
 	WEAPONSMITH      = 66
-	CANNONFOUNDRY    = 67
+	CANNON_FOUNDRY   = 67
 
 	BREWERY          = 68
 	HOP_FIELD        = 69

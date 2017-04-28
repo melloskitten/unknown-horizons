@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ###################################################
 # Copyright (C) 2013-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
@@ -23,11 +22,12 @@
 
 
 from fife.extensions.serializers.simplexml import SimpleXMLSerializer
+
 from horizons.constants import LANGUAGENAMES, SETTINGS
 from horizons.i18n import change_language
 
 
-class Settings(object):
+class Settings:
 
 	# Settings key storing the SettingsVersion used to upgrade settings
 	SETTINGS_VERSION = "SettingsVersion"

@@ -21,12 +21,12 @@
 
 import logging
 
+from horizons.network.packets import SafeUnpickler
 from horizons.util.python import get_all_subclasses
 from horizons.util.worldobject import WorldObject
-from horizons.network.packets import SafeUnpickler
 
 
-class Command(object):
+class Command:
 	"""Base class for every Command."""
 	log = logging.getLogger("command")
 

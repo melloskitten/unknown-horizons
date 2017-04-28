@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ###################################################
 # Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
@@ -20,37 +19,37 @@
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # ###################################################
 
-import logging
-import json
 import copy
-
+import importlib
+import json
+import logging
 from collections import deque
 from functools import partial
 
 import horizons.globals
-from horizons.world.island import Island
-from horizons.world.player import HumanPlayer
-from horizons.scheduler import Scheduler
-from horizons.util.buildingindexer import BuildingIndexer
-from horizons.util.color import Color
-from horizons.util.shapes import Circle, Point, Rect
-from horizons.util.worldobject import WorldObject
-from horizons.constants import UNITS, BUILDINGS, RES, GROUND, GAME, MAP, PATHS
-from horizons.ai.trader import Trader
-from horizons.ai.pirate import Pirate
 from horizons.ai.aiplayer import AIPlayer
-from horizons.entities import Entities
-from horizons.world.buildingowner import BuildingOwner
-from horizons.world.diplomacy import Diplomacy
-from horizons.world.units.weapon import Weapon
+from horizons.ai.pirate import Pirate
+from horizons.ai.trader import Trader
 from horizons.command.unit import CreateUnit
 from horizons.component.healthcomponent import HealthComponent
 from horizons.component.selectablecomponent import SelectableComponent
 from horizons.component.storagecomponent import StorageComponent
-from horizons.world.disaster.disastermanager import DisasterManager
-from horizons.world import worldutils
-from horizons.util.savegameaccessor import SavegameAccessor
+from horizons.constants import BUILDINGS, GAME, GROUND, MAP, PATHS, RES, UNITS
+from horizons.entities import Entities
 from horizons.messaging import LoadingProgress
+from horizons.scheduler import Scheduler
+from horizons.util.buildingindexer import BuildingIndexer
+from horizons.util.color import Color
+from horizons.util.savegameaccessor import SavegameAccessor
+from horizons.util.shapes import Circle, Point, Rect
+from horizons.util.worldobject import WorldObject
+from horizons.world import worldutils
+from horizons.world.buildingowner import BuildingOwner
+from horizons.world.diplomacy import Diplomacy
+from horizons.world.disaster.disastermanager import DisasterManager
+from horizons.world.island import Island
+from horizons.world.player import HumanPlayer
+from horizons.world.units.weapon import Weapon
 
 
 class World(BuildingOwner, WorldObject):
@@ -172,7 +171,7 @@ class World(BuildingOwner, WorldObject):
 
 		# use a dict because it's directly supported by the pathfinding algo
 		LoadingProgress.broadcast(self, 'world_init_water')
-		self.water = dict((tile, 1.0) for tile in self.ground_map)
+		self.water = {tile: 1.0 for tile in self.ground_map}
 		self._init_water_bodies()
 		self.sea_number = self.water_body[(self.min_x, self.min_y)]
 		for island in self.islands:
@@ -324,7 +323,7 @@ class World(BuildingOwner, WorldObject):
 			if ai_data:
 				class_package, class_name = ai_data[0]
 				# import ai class and call load on it
-				module = __import__('horizons.ai.'+class_package, fromlist=[str(class_name)])
+				module = importlib.import_module('horizons.ai.' + class_package)
 				ai_class = getattr(module, class_name)
 				player = ai_class.load(self.session, savegame_db, player_worldid)
 			else: # no ai
@@ -448,7 +447,7 @@ class World(BuildingOwner, WorldObject):
 				def _preselect_player_ship(player_ship):
 					sel_comp = player_ship.get_component(SelectableComponent)
 					sel_comp.select(reset_cam=True)
-					self.session.selected_instances = set([player_ship])
+					self.session.selected_instances = {player_ship}
 					self.session.ingame_gui.handle_selection_group(1, True)
 					sel_comp.show_menu()
 				select_ship = partial(_preselect_player_ship, ship)

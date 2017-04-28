@@ -35,8 +35,8 @@ import functools
 import imp
 import locale
 import logging
-import logging.config		# redundant, because "logging" already imported?
-import logging.handlers		# redundant, because "logging" already imported?
+import logging.config  # redundant, because "logging" already imported?
+import logging.handlers  # redundant, because "logging" already imported?
 import os
 import os.path
 import platform
@@ -224,7 +224,7 @@ def setup_debugging(options):
 	if options.debug or options.debug_log_only:
 		logging.getLogger().setLevel(logging.DEBUG)
 	for module in options.debug_module:
-		if not module in logging.Logger.manager.loggerDict:
+		if module not in logging.Logger.manager.loggerDict:
 			print('No such logger: %s' % module)
 			sys.exit(1)
 		logging.getLogger(module).setLevel(logging.DEBUG)
@@ -251,7 +251,7 @@ def setup_debugging(options):
 		# log any other stdout output there (this happens, when FIFE c++ code launches some
 		# FIFE python code and an exception happens there). The exceptionhook only gets
 		# a director exception, but no real error message then.
-		class StdOutDuplicator(object):
+		class StdOutDuplicator:
 			def write(self, line):
 				line = str(line)
 				sys.__stdout__.write(line)

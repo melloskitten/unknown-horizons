@@ -19,8 +19,10 @@
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # ###################################################
 
+from typing import List
 
-class Component(object):
+
+class Component:
 	"""
 	Base class for all components. Something like an interface.
 

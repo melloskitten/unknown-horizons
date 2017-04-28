@@ -19,17 +19,19 @@
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # ###################################################
 
-import math
 import logging
+import math
 import operator
+from typing import Dict
 
 from horizons.ai.aiplayer.constants import BUILD_RESULT
-from horizons.entities import Entities
 from horizons.constants import GAME_SPEED, RES
-from horizons.world.production.productionline import ProductionLine
+from horizons.entities import Entities
 from horizons.world.production.producer import Producer
+from horizons.world.production.productionline import ProductionLine
 
-class AbstractBuilding(object):
+
+class AbstractBuilding:
 	"""
 	An object of this class tells the AI how to build a specific type of building.
 

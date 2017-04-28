@@ -25,10 +25,12 @@ but rather a generic enhancement of the programming language.
 """
 
 import collections
+from typing import Any, Set, Type
 
 from .decorators import *
 
-class Const(object):
+
+class Const:
 	"""An immutable type. Think C++-like const"""
 	def __setattr__(self, name, value):
 		"""Disallow changing an already set attribute.
@@ -49,7 +51,7 @@ def parse_port(port, allow_zero=True):
 
 def get_all_subclasses(cls):
 	"""Recursivly find all subclasses of a given class."""
-	result = set()
+	result = set() # type: Set[type]
 	for subclass in cls.__class__.__subclasses__(cls):
 		if subclass not in result:
 			result.add(subclass)
@@ -84,23 +86,3 @@ def trim_value(value, min, max):
 		return max
 	else:
 		return value
-
-
-# TODO Remove ignore once https://github.com/python/typeshed/pull/608 ships
-
-class ChainedContainer(collections.Container): # type: ignore
-	"""
-	Allows membership test in multiple containers.
-
-	>>> chain = ChainedContainer({1: 'foo'}, [2, 3], set([5, 6]))
-	>>> 2 in chain
-	True
-	>>> 0 in chain
-	False
-
-	"""
-	def __init__(self, *containers):
-		self.containers = containers
-
-	def __contains__(self, value):
-		return any(value in c for c in self.containers)

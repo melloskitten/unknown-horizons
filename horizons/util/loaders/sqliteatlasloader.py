@@ -19,6 +19,8 @@
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # ###################################################
 
+from typing import Any, List
+
 from fife import fife
 
 import horizons.globals
@@ -26,11 +28,11 @@ from horizons.util.loaders.actionsetloader import ActionSetLoader
 from horizons.util.loaders.tilesetloader import TileSetLoader
 
 
-class SQLiteAtlasLoader(object):
+class SQLiteAtlasLoader:
 	"""Loads atlases and appropriate action sets from a JSON file and a SQLite database.
 	"""
 	def __init__(self):
-		self.atlaslib = []
+		self.atlaslib = [] # type: List[Any]
 
 		# TODO: There's something wrong with ground entities if atlas.sql
 		# is loaded only here, for now it's added to DB_FILES (empty file if no atlases are used)

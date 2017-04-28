@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ###################################################
 # Copyright (C) 2008-2017 The Unknown Horizons Team
 # team@unknown-horizons.org
@@ -237,9 +236,10 @@ class ProductionOverviewTab(OverviewTab):
 		self.widget.child_finder('capacity_utilization').text = str(utilization) + '%'
 
 	def _add_resource_icons(self, container, resources, marker=False):
-		calculate_position = lambda amount: (amount * 100) // inventory.get_limit(res)
 		for res in resources:
 			inventory = self.instance.get_component(StorageComponent).inventory
+			calculate_position = lambda amount: (amount * 100) // inventory.get_limit(res)
+
 			filled = calculate_position(inventory[res])
 			marker_level = calculate_position(-resources[res]) if marker else 0
 			image_button = ImageFillStatusButton.init_for_res(self.instance.session.db, res,
@@ -326,8 +326,9 @@ class SmallProductionOverviewTab(ProductionOverviewTab):
 	BUTTON_BACKGROUND = "content/gui/images/buttons/msg_button_small.png"
 
 	def get_displayed_productions(self):
-		possible_res = set(res for field in self.instance.get_providers()
-		                       for res in field.provided_resources)
+		possible_res = {res
+		                for field in self.instance.get_providers()
+		                for res in field.provided_resources}
 		all_farm_productions = self.instance.get_component(Producer).get_productions()
 		productions = {p for p in all_farm_productions for res in p.get_consumed_resources().keys() if res in possible_res}
 		return sorted(productions, key=operator.methodcaller('get_production_line_id'))

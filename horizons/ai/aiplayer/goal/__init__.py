@@ -23,7 +23,8 @@ import logging
 
 from horizons.ai.aiplayer.constants import BUILD_RESULT, GOAL_RESULT
 
-class Goal(object):
+
+class Goal:
 	"""An object of this class describes a goal that an AI player attempts to fulfil."""
 
 	log = logging.getLogger("ai.aiplayer.goal")

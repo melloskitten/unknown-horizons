@@ -21,6 +21,7 @@
 
 import logging
 import os
+from io import BytesIO
 
 from fife import fife
 from fife.extensions.pychan import loadXML
@@ -31,8 +32,6 @@ from horizons.gui.widgets.imagebutton import ImageButton
 from horizons.i18n import gettext as T
 from horizons.util.python import decorators
 from horizons.util.python.callback import Callback
-
-from io import BytesIO
 
 
 @decorators.cachedfunction
@@ -197,8 +196,8 @@ def create_resource_selection_dialog(on_click, inventory, db,
 			button = ImageFillStatusButton.init_for_res(db, res_id,
 						                                amount=amount, filled=filled, uncached=True,
 						                                use_inactive_icon=False, showprice=True)
-			button.button.capture(cb)
-			button.button.name = "resource_%d" % res_id
+			button.capture(cb, event_name="mouseClicked")
+			button.name = "resource_%d" % res_id
 
 		current_hbox.addChild(button)
 		if index % amount_per_line == 0:
